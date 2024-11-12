@@ -70,12 +70,19 @@ export const typeDefs = `#graphql
         token: String!
     }
 
+    type GenericSuccess {
+        status: Boolean!
+        message: String!
+    }
+
     type Query {
         user(userId: ID!): User
     }
 
     type Mutation {
         signup(signupInfo: ADDUSERINPUT!): AuthenticatedUser!
+        login(loginInfo: LOGINUSERINPUT!): AuthenticatedUser!
+        changePassword(passwordInfo: CHANGEPASSWORDINPUT!): GenericSuccess!
     }
 
     input ADDUSERINPUT {
@@ -85,6 +92,17 @@ export const typeDefs = `#graphql
         password: String!
         gender: Gender!
         email: String!
+    }
+
+    input LOGINUSERINPUT {
+        username: String!
+        password: String!
+    }
+
+    input CHANGEPASSWORDINPUT {
+        new_password: String!
+        confirm_password: String!
+        current_password: String!
     }
 
 `;

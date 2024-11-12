@@ -1,6 +1,8 @@
 import { GraphQLDateTime } from "graphql-scalars";
 import { registerUser } from "./services/registerUser.js";
 import { retrieveUser } from "./services/retrieveUser.js";
+import { loginUser } from "./services/loginUser.js";
+import { changePassword } from "./services/changePassword.js";
 
 export const resolvers = {
   Date: GraphQLDateTime,
@@ -11,7 +13,7 @@ export const resolvers = {
         return await retrieveUser(userId);
       } catch (error) {
         console.error("Error retrieving user:", error);
-        throw new Error("An error occurred while retrieving the user.");
+        throw error;
       }
     },
   },
@@ -22,7 +24,28 @@ export const resolvers = {
         return await registerUser(signupInfo);
       } catch (error) {
         console.error("Error signing up user:", error);
-        throw new Error("An error occurred during signup. Please try again.");
+        throw error;
+      }
+    },
+    login: async (parent, args, context) => {
+      try {
+        const { loginInfo } = args;
+        return await loginUser(loginInfo);
+      } catch (error) {
+        console.error("Error login user:", error);
+        throw error;
+      }
+    },
+    changePassword: async (parent, args, context) => {
+      try {
+        const { req } = context;
+        if (!req.isAuth) {
+          throw new Error("User is not authenticated");
+        }
+        return await changePassword(args.passwordInfo, req.userId);
+      } catch (error) {
+        console.error("Error changing password:", error);
+        throw error;
       }
     },
   },
