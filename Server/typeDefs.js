@@ -13,6 +13,12 @@ export const typeDefs = `#graphql
         FEMALE
     }
 
+    enum AllowedPost {
+        TEXT
+        IMAGE
+        VIDEO
+    }
+
     type SettingsNotifications {
         enable_notification: Boolean!
         enable_notification_sound: Boolean!
@@ -75,6 +81,31 @@ export const typeDefs = `#graphql
         message: String!
     }
 
+    type Reply {
+        _id: ID!
+        user: User!
+        textContent: String!
+        createdAt: Date!
+    }
+
+    type Comment {
+        _id: ID!
+        user: User!
+        textContent: String!
+        replies: [Reply!]!
+        createdAt: Date!
+    }
+
+    type Post {
+        _id: ID!
+        user: User!
+        type: AllowedPost!
+        textContent: String!
+        mediaURL: String
+        comments: [Comment!]!
+        createdAt: Date!
+    }
+
     type Query {
         user(userId: ID!): User
     }
@@ -83,6 +114,14 @@ export const typeDefs = `#graphql
         signup(signupInfo: ADDUSERINPUT!): AuthenticatedUser!
         login(loginInfo: LOGINUSERINPUT!): AuthenticatedUser!
         changePassword(passwordInfo: CHANGEPASSWORDINPUT!): GenericSuccess!
+        addPost(postInfo: ADDPOSTINPUT): Post!
+    }
+
+    input ADDPOSTINPUT {
+        type: AllowedPost!
+        textContent: String!
+        mediaURL: String
+        createdAt: Date
     }
 
     input ADDUSERINPUT {
