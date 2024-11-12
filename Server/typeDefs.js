@@ -1,4 +1,8 @@
+import { GraphQLDateTime } from "graphql-scalars";
+
 export const typeDefs = `#graphql
+    scalar Date
+
     enum AllowedTheme {
         DAY
         NIGHT
@@ -55,10 +59,32 @@ export const typeDefs = `#graphql
         website: String
         interests: [String]!
         languages: [String]!
-        dob: String
+        dob: Date
         profile_photo: String
         cover_photo: String
         settings: Settings!
+    }
+
+    type AuthenticatedUser {
+        user: User!
+        token: String!
+    }
+
+    type Query {
+        user(userId: ID!): User
+    }
+
+    type Mutation {
+        signup(signupInfo: ADDUSERINPUT!): AuthenticatedUser!
+    }
+
+    input ADDUSERINPUT {
+        firstname: String!
+        lastname: String!
+        username: String!
+        password: String!
+        gender: Gender!
+        email: String!
     }
 
 `;

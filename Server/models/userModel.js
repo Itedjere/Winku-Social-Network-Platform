@@ -5,7 +5,7 @@ const userSchema = mongoose.Schema({
   lastname: { type: String, required: true },
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  gender: { type: String, enum: ["male", "female"], required: true },
+  gender: { type: String, enum: ["MALE", "FEMALE"], required: true },
   email: { type: String, required: true, unique: true },
   about_me: { type: String },
   phone: { type: String },
@@ -29,7 +29,7 @@ const userSchema = mongoose.Schema({
       expose_author_name: { type: Boolean, default: true },
     },
     display: {
-      theme: { type: String, enum: ["day", "night"], default: "day" },
+      theme: { type: String, enum: ["DAY", "NIGHT"], default: "DAY" },
     },
     interactions: {
       enable_tagging: { type: Boolean, default: true },
