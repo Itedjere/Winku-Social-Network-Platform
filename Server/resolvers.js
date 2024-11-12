@@ -10,8 +10,8 @@ export const resolvers = {
         const { userId } = args;
         return await retrieveUser(userId);
       } catch (error) {
-        console.error("Error retrieving user details:", error);
-        throw new Error("Failed to fetch user details. Please try again.");
+        console.error("Error retrieving user:", error);
+        throw new Error("An error occurred while retrieving the user.");
       }
     },
   },
