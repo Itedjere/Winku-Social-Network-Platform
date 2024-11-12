@@ -99,10 +99,13 @@ export const typeDefs = `#graphql
     type Post {
         _id: ID!
         user: User!
-        type: AllowedPost!
+        postType: AllowedPost!
         textContent: String!
         mediaURL: String
         comments: [Comment!]!
+        likes: Int!
+        dislikes: Int!
+        views: Int!
         createdAt: Date!
     }
 
@@ -118,7 +121,7 @@ export const typeDefs = `#graphql
     }
 
     input ADDPOSTINPUT {
-        type: AllowedPost!
+        postType: AllowedPost!
         textContent: String!
         mediaURL: String
         createdAt: Date

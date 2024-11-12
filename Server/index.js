@@ -10,6 +10,7 @@ import { typeDefs } from "./typeDefs.js";
 import { resolvers } from "./resolvers.js";
 import dbconnect from "./dbconnect/dbconnect.js";
 import { authenticationMiddleware } from "./middlewares/authenticationMiddleware.js";
+import { upload } from "./multer/fileUploadConfiguration.js";
 
 // Required logic for integrating with Express
 const app = express();
@@ -27,6 +28,12 @@ const server = new ApolloServer({
 });
 // Ensure we wait for our server to start
 await server.start();
+
+// Apply multer middleware for file upload on specific GraphQL endpoint
+app.post("/graphql", upload.single("media"), (req, res, next) => {
+  req.file = req.file; // Attach the uploaded file to the request
+  next();
+});
 
 // Set up our Express middleware to handle CORS, body parsing,
 // and our expressMiddleware function.

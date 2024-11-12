@@ -55,7 +55,7 @@ export const resolvers = {
         if (!req.isAuth) {
           throw new Error("User is not authenticated");
         }
-        return await createPost(args.postInfo, req.userId);
+        return await createPost(args.postInfo, req);
       } catch (error) {
         console.error("Error creating post:", error);
         throw error;

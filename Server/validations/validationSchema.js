@@ -49,3 +49,8 @@ export const changePasswordValidationSchema = Joi.object({
     "string.empty": "Current password is required.",
   }),
 });
+
+export const addPostValidationSchema = Joi.object({
+  postType: Joi.string().valid("MALE", "FEMALE").required(),
+  textContent: Joi.string().required(),
+});
