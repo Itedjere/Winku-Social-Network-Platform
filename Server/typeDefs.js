@@ -118,6 +118,8 @@ export const typeDefs = `#graphql
         login(loginInfo: LOGINUSERINPUT!): AuthenticatedUser!
         changePassword(passwordInfo: CHANGEPASSWORDINPUT!): GenericSuccess!
         addPost(postInfo: ADDPOSTINPUT): Post!
+        likePost(postId: ID!): Post!
+        dislikePost(postId: ID!): Post!
     }
 
     input ADDPOSTINPUT {

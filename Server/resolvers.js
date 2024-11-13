@@ -4,6 +4,8 @@ import { retrieveUser } from "./services/retrieveUser.js";
 import { loginUser } from "./services/loginUser.js";
 import { changePassword } from "./services/changePassword.js";
 import { createPost } from "./services/createPost.js";
+import { likePost } from "./services/likePost.js";
+import { dislikePost } from "./services/dislikePost.js";
 
 export const resolvers = {
   Date: GraphQLDateTime,
@@ -58,6 +60,30 @@ export const resolvers = {
         return await createPost(args.postInfo, req);
       } catch (error) {
         console.error("Error creating post:", error);
+        throw error;
+      }
+    },
+    likePost: async (parent, args, context) => {
+      try {
+        const { req } = context;
+        if (!req.isAuth) {
+          throw new Error("User is not authenticated");
+        }
+        return await likePost(args, req);
+      } catch (error) {
+        console.error("Failed to like post:", error);
+        throw error;
+      }
+    },
+    dislikePost: async (parent, args, context) => {
+      try {
+        const { req } = context;
+        if (!req.isAuth) {
+          throw new Error("User is not authenticated");
+        }
+        return await dislikePost(args, req);
+      } catch (error) {
+        console.error("Failed to dislike post:", error);
         throw error;
       }
     },

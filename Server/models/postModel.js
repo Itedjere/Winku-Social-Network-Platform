@@ -6,8 +6,9 @@ const postSchema = new mongoose.Schema({
   textContent: { type: String, required: true },
   mediaURL: { type: String }, // URL to media file if it's an image/video
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
-  likes: { type: Number, default: 0 },
-  dislikes: { type: Number, default: 0 },
+  // Track users who liked or disliked the post
+  likedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  dislikedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   views: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
 });
