@@ -6,6 +6,11 @@ import { changePassword } from "./services/changePassword.js";
 import { createPost } from "./services/createPost.js";
 import { likePost } from "./services/likePost.js";
 import { dislikePost } from "./services/dislikePost.js";
+import { createComment } from "./services/createComment.js";
+import { createReply } from "./services/createReply.js";
+import { fetchAllPosts } from "./services/fetchAllPosts.js";
+import { fetchAllComments } from "./services/fetchAllComments.js";
+import { fetchAllReplies } from "./services/fetchAllReplies.js";
 
 export const resolvers = {
   Date: GraphQLDateTime,
@@ -16,6 +21,30 @@ export const resolvers = {
         return await retrieveUser(userId);
       } catch (error) {
         console.error("Error retrieving user:", error);
+        throw error;
+      }
+    },
+    allPosts: async (parent, args, context) => {
+      try {
+        return await fetchAllPosts();
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+        throw error;
+      }
+    },
+    allComments: async (parent, args, context) => {
+      try {
+        return await fetchAllComments(args.postId);
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+        throw error;
+      }
+    },
+    allReplies: async (parent, args, context) => {
+      try {
+        return await fetchAllReplies(args.commentId);
+      } catch (error) {
+        console.error("Error fetching replies:", error);
         throw error;
       }
     },
@@ -84,6 +113,30 @@ export const resolvers = {
         return await dislikePost(args, req);
       } catch (error) {
         console.error("Failed to dislike post:", error);
+        throw error;
+      }
+    },
+    addComment: async (parent, args, context) => {
+      try {
+        const { req } = context;
+        if (!req.isAuth) {
+          throw new Error("User is not authenticated");
+        }
+        return await createComment(args, req);
+      } catch (error) {
+        console.error("Failed to comment on post:", error);
+        throw error;
+      }
+    },
+    addComment: async (parent, args, context) => {
+      try {
+        const { req } = context;
+        if (!req.isAuth) {
+          throw new Error("User is not authenticated");
+        }
+        return await createReply(args, req);
+      } catch (error) {
+        console.error("Failed to reply on comment:", error);
         throw error;
       }
     },

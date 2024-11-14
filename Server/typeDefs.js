@@ -84,6 +84,7 @@ export const typeDefs = `#graphql
     type Reply {
         _id: ID!
         user: User!
+        comment: Comment!
         textContent: String!
         createdAt: Date!
     }
@@ -91,8 +92,10 @@ export const typeDefs = `#graphql
     type Comment {
         _id: ID!
         user: User!
+        post: Post!
         textContent: String!
-        replies: [Reply!]!
+        replies: [ID!]!
+        repliesCount: Int!
         createdAt: Date!
     }
 
@@ -102,15 +105,19 @@ export const typeDefs = `#graphql
         postType: AllowedPost!
         textContent: String!
         mediaURL: String
-        comments: [Comment!]!
-        likes: Int!
-        dislikes: Int!
+        comments: [ID!]!
+        commentsCount: Int!
+        likedBy: [ID!]!
+        dislikedBy: [ID!]!
         views: Int!
         createdAt: Date!
     }
 
     type Query {
         user(userId: ID!): User
+        allPosts: [Post!]!
+        allComments(postId: ID!): [Comment!]!
+        allReplies(commentId: ID!): [Reply!]!
     }
 
     type Mutation {
@@ -120,6 +127,14 @@ export const typeDefs = `#graphql
         addPost(postInfo: ADDPOSTINPUT): Post!
         likePost(postId: ID!): Post!
         dislikePost(postId: ID!): Post!
+        addComment(postId: ID!, textContent: String!): Comment!
+        addReply(replyInfo: ADDREPLYINPUT!): Reply!
+    }
+
+    input ADDREPLYINPUT {
+        postId: ID!
+        commentId: ID!
+        textContent: String!
     }
 
     input ADDPOSTINPUT {
