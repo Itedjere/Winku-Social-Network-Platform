@@ -1,4 +1,4 @@
-import { Reply } from "../models/replyModel";
+import { Reply } from "../models/replyModel.js";
 
 export const fetchAllReplies = async (commentId) => {
   const replies = await Reply.find({ commentId })
