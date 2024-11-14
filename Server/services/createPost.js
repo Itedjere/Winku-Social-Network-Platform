@@ -25,5 +25,7 @@ export const createPost = async (postInfo, req) => {
   });
 
   await post.save();
-  return await post.populate("userId").execPopulate();
+  return await post
+    .populate("userId", "firstname lastname profile_photo")
+    .execPopulate(); // Only include specific fields
 };
