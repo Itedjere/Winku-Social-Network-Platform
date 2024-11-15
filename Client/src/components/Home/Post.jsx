@@ -30,7 +30,7 @@ import { TfiHeart, TfiHeartBroken } from "react-icons/tfi";
 
 export default function Post() {
   return (
-    <div className="col-lg-6">
+    <>
       <div className="central-meta">
         <div className="new-postbox">
           <figure>
@@ -947,6 +947,6 @@ export default function Post() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
