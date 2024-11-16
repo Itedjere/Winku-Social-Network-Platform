@@ -6,6 +6,11 @@ import ProfileTimeline from "./pages/ProfileTimeline";
 import Register from "./pages/Register";
 import ProfileLayout from "./components/Profile/ProfileLayout";
 import MainLayout from "./components/MainLayout";
+import ProfilePhotos from "./pages/ProfilePhotos";
+import ProfileVideos from "./pages/ProfileVideos";
+import ProfileFriends from "./pages/ProfileFriends";
+import ProfileGroups from "./pages/ProfileGroups";
+import ProfileAbout from "./pages/ProfileAbout";
 
 function App() {
   return (
@@ -18,6 +23,11 @@ function App() {
           <Route path="/profile" element={<ProfileLayout />}>
             <Route index element={<ProfileTimeline />} />
             <Route path="timeline" element={<ProfileTimeline />} />
+            <Route path="photos" element={<ProfilePhotos />} />
+            <Route path="videos" element={<ProfileVideos />} />
+            <Route path="friends" element={<ProfileFriends />} />
+            <Route path="groups" element={<ProfileGroups />} />
+            <Route path="about" element={<ProfileAbout />} />
           </Route>
         </Route>
       </Routes>

@@ -3677,7 +3677,8 @@ a.add-butn.more-action {
 }
 
 .basics > li i,
-.education > li i {
+.basics > li svg,
+.education > li i .education > li svg {
   margin-right: 30px;
 }
 
@@ -3748,7 +3749,8 @@ a.add-butn.more-action {
   margin-right: 5px;
 }
 
-.groups > span i {
+.groups > span i,
+.groups > span svg {
   margin-right: 5px;
 }
 
