@@ -1,7 +1,7 @@
-import ResponsiveHeader from "./Navbar/ResponsiveHeader";
-import Topbar from "./Navbar/Topbar";
-import Footer from "./Footer/Footer";
-import BottomBar from "./Footer/BottomBar";
+import ResponsiveHeader from "../Navbar/ResponsiveHeader";
+import Topbar from "../Navbar/Topbar";
+import Footer from "../Footer/Footer";
+import BottomBar from "../Footer/BottomBar";
 import { Outlet } from "react-router-dom";
 
 export default function MainLayout() {
