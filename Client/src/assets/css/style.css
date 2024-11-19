@@ -9995,3 +9995,8 @@ aside.sidebar.full-style {
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
+.mtrl-select.is-invalid::before {
+  width: 100%;
+  left: 0;
+  background: #ff0000;
+}

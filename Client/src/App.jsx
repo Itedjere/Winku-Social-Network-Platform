@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Error from "./pages/Error";
+import Error from "./pages/NotFound";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import ProfileTimeline from "./pages/ProfileTimeline";
@@ -17,7 +17,7 @@ import ProfileEditInterest from "./pages/ProfileEditInterest";
 import ProfileEditAccountSettings from "./pages/ProfileEditAccountSettings";
 import ProfileChangePassword from "./pages/ProfileChangePassword";
 import ChatLayout from "./components/layouts/ChatLayout";
-import Error from "./pages/Error";
+import NotFound from "./pages/NotFound";
 import Chat from "./pages/Chat";
 
 function App() {
@@ -49,7 +49,7 @@ function App() {
             <Route path="change-password" element={<ProfileChangePassword />} />
           </Route>
         </Route>
-        <Route path="*" element={<Error />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

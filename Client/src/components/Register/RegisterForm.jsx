@@ -1,11 +1,24 @@
 import React from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { registerSchema } from "../../utilities/utilities";
 
 export default function RegisterForm() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(registerSchema),
+  });
+
+  const onSubmit = (data) => {};
+
   return (
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-      <div class="login-reg-bg">
-        <div class="log-reg-area reg">
-          <h2 class="log-title">Register</h2>
+    <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+      <div className="login-reg-bg">
+        <div className="log-reg-area reg">
+          <h2 className="log-title">Register</h2>
           <p>
             Don’t use Winku Yet?{" "}
             <a href="#" title="">
@@ -16,66 +29,144 @@ export default function RegisterForm() {
               Join now
             </a>
           </p>
-          <form method="post">
-            <div class="form-group">
-              <input type="text" required="required" />
-              <label class="control-label" htmlFor="input">
-                First & Last Name
-              </label>
-              <i class="mtrl-select"></i>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="row">
+              <div className="col-6">
+                <div className="form-group">
+                  <div className="position-relative">
+                    <input
+                      type="text"
+                      id="firstname"
+                      {...register("firstname")}
+                    />
+                    <label className="control-label" htmlFor="firstname">
+                      First Name
+                    </label>
+                    <i
+                      className={`mtrl-select ${
+                        errors.firstname && "is-invalid"
+                      }`}
+                    ></i>
+                  </div>
+                  {errors.firstname && (
+                    <div className="invalid-feedback d-block">
+                      {errors.firstname.message}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="col-6">
+                <div className="form-group">
+                  <div className="position-relative">
+                    <input
+                      type="text"
+                      id="lastname"
+                      {...register("lastname")}
+                    />
+                    <label className="control-label" htmlFor="lastname">
+                      Last Name
+                    </label>
+                    <i
+                      className={`mtrl-select ${
+                        errors.lastname && "is-invalid"
+                      }`}
+                    ></i>
+                  </div>
+                  {errors.lastname && (
+                    <div className="invalid-feedback d-block">
+                      {errors.lastname.message}
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
-            <div class="form-group">
-              <input type="text" required="required" />
-              <label class="control-label" htmlFor="input">
-                User Name
-              </label>
-              <i class="mtrl-select"></i>
+            <div className="form-group">
+              <div className="position-relative">
+                <input type="text" id="username" {...register("username")} />
+                <label className="control-label" htmlFor="username">
+                  User Name
+                </label>
+                <i
+                  className={`mtrl-select ${errors.username && "is-invalid"}`}
+                ></i>
+              </div>
+              {errors.username && (
+                <div className="invalid-feedback d-block">
+                  {errors.username.message}
+                </div>
+              )}
             </div>
-            <div class="form-group">
-              <input type="password" required="required" />
-              <label class="control-label" htmlFor="input">
-                Password
-              </label>
-              <i class="mtrl-select"></i>
+            <div className="form-group">
+              <div className="position-relative">
+                <input
+                  type="password"
+                  id="password"
+                  {...register("password")}
+                />
+                <label className="control-label" htmlFor="password">
+                  Password
+                </label>
+                <i
+                  className={`mtrl-select ${errors.password && "is-invalid"}`}
+                ></i>
+              </div>
+              {errors.password && (
+                <div className="invalid-feedback d-block">
+                  {errors.password.message}
+                </div>
+              )}
             </div>
-            <div class="form-radio">
-              <div class="radio">
+            <div className="form-radio">
+              <div className="radio">
                 <label>
-                  <input type="radio" name="radio" checked="checked" />
-                  <i class="check-box"></i>Male
+                  <input type="radio" {...register("gender")} value="MALE" />
+                  <i className="check-box"></i>Male
                 </label>
               </div>
-              <div class="radio">
+              <div className="radio">
                 <label>
-                  <input type="radio" name="radio" />
-                  <i class="check-box"></i>Female
+                  <input type="radio" {...register("gender")} value="FEMALE" />
+                  <i className="check-box"></i>Female
                 </label>
               </div>
             </div>
-            <div class="form-group">
-              <input type="text" required="required" />
-              <label class="control-label" htmlFor="input">
-                <a
-                  href="https://wpkixx.com/cdn-cgi/l/email-protection"
-                  class="__cf_email__"
-                  data-cfemail="6c29010d05002c"
-                >
-                  [email&#160;protected]
-                </a>
-              </label>
-              <i class="mtrl-select"></i>
+            {errors.gender && (
+              <div className="invalid-feedback d-block mb-1">
+                {errors.gender.message}
+              </div>
+            )}
+            <div className="form-group">
+              <div className="position-relative">
+                <input type="text" {...register("email")} id="email" />
+                <label className="control-label" htmlFor="email">
+                  Email Address
+                </label>
+                <i
+                  className={`mtrl-select ${errors.email && "is-invalid"}`}
+                ></i>
+              </div>
+              {errors.email && (
+                <div className="invalid-feedback d-block">
+                  {errors.email.message}
+                </div>
+              )}
             </div>
-            <div class="checkbox">
+            <div className="checkbox">
               <label>
-                <input type="checkbox" checked="checked" />
-                <i class="check-box"></i>Accept Terms & Conditions ?
+                <input type="checkbox" {...register("terms")} />
+                <i className="check-box"></i>Accept Terms & Conditions ?
               </label>
+              {errors.terms && (
+                <div className="invalid-feedback d-block">
+                  {errors.terms.message}
+                </div>
+              )}
             </div>
-            <a href="#" title="" class="already-have">
+            <a href="#" title="" className="already-have">
               Already have an account
             </a>
-            <div class="submit-btns">
-              <button class="mtr-btn signup" type="button">
+            <div className="submit-btns">
+              <button className="mtr-btn signup" type="submit">
                 <span>Register</span>
               </button>
             </div>
