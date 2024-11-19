@@ -13,7 +13,6 @@ import ProfileGroups from "./pages/ProfileGroups";
 import ProfileAbout from "./pages/ProfileAbout";
 import Notifications from "./pages/Notifications";
 import ProfileEditBasics from "./pages/ProfileEditBasics";
-import ProfileEditInfo from "./components/Profile/ProfileEditInfo";
 import ProfileEditInterest from "./pages/ProfileEditInterest";
 import ProfileEditAccountSettings from "./pages/ProfileEditAccountSettings";
 import ProfileChangePassword from "./pages/ProfileChangePassword";
