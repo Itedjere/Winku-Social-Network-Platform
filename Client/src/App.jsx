@@ -17,6 +17,7 @@ import ProfileEditInterest from "./pages/ProfileEditInterest";
 import ProfileEditAccountSettings from "./pages/ProfileEditAccountSettings";
 import ProfileChangePassword from "./pages/ProfileChangePassword";
 import ChatLayout from "./components/layouts/ChatLayout";
+import Error from "./pages/Error";
 import Chat from "./pages/Chat";
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
             <Route path="change-password" element={<ProfileChangePassword />} />
           </Route>
         </Route>
+        <Route path="*" element={<Error />} />
       </Routes>
     </BrowserRouter>
   );

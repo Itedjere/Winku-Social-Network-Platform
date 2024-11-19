@@ -1,6 +1,10 @@
 import React from "react";
+import { useRouteError } from "react-router-dom";
 
 export default function Error() {
+  const { error } = useRouteError();
+  console.error(error);
+
   return (
     <div className="theme-layout">
       <div className="container-fluid pdng0">
@@ -10,8 +14,8 @@ export default function Error() {
               <div className="bg-image error"></div>
               <div className="error-meta">
                 <h1>whoops!</h1>
-                <span>we couldn't find that page </span>
-                <a href="index-2.html" title="" data-ripple="">
+                <span>{error.statusText || error.message} </span>
+                <a href="/" title="" data-ripple="">
                   Go Back
                 </a>
               </div>
