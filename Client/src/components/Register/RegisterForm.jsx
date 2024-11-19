@@ -1,9 +1,24 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import { useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { registerSchema } from "../../utilities/utilities";
+import { toast } from "react-toastify";
+import { handleApolloErrors, registerSchema } from "../../utilities/utilities";
+import { REGISTER_USER } from "../../utilities/graphql_mutations";
+import { AuthContext } from "../../contexts/AuthContext";
+import { Link } from "react-router-dom";
 
 export default function RegisterForm() {
+  const { handleAuthentication } = useContext(AuthContext);
+
+  const [
+    registerUser,
+    {
+      data: registrationData,
+      loading: registrationLoading,
+      error: registrationError,
+    },
+  ] = useMutation(REGISTER_USER);
   const {
     register,
     handleSubmit,
@@ -12,7 +27,32 @@ export default function RegisterForm() {
     resolver: yupResolver(registerSchema),
   });
 
-  const onSubmit = (data) => {};
+  useEffect(() => {
+    if (registrationError) {
+      handleApolloErrors(registrationError);
+    }
+
+    if (registrationData) {
+      toast.success("You registered successfully!");
+      handleAuthentication(registrationData.signup);
+    }
+  }, [registrationError, registrationData]);
+
+  const onSubmit = (data) => {
+    // call the registerUser Method
+    registerUser({
+      variables: {
+        signupInfo: {
+          email: data.email,
+          firstname: data.firstname,
+          lastname: data.lastname,
+          gender: data.gender,
+          username: data.username,
+          password: data.password,
+        },
+      },
+    });
+  };
 
   return (
     <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -162,12 +202,14 @@ export default function RegisterForm() {
                 </div>
               )}
             </div>
-            <a href="#" title="" className="already-have">
+            <Link to="/login" title="" className="already-have">
               Already have an account
-            </a>
+            </Link>
             <div className="submit-btns">
               <button className="mtr-btn signup" type="submit">
-                <span>Register</span>
+                <span>
+                  {registrationLoading ? "Please wait..." : "Register"}
+                </span>
               </button>
             </div>
           </form>

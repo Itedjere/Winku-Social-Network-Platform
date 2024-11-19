@@ -1,4 +1,6 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useContext } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthContext } from "./contexts/AuthContext";
 import Error from "./pages/NotFound";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -21,13 +23,20 @@ import NotFound from "./pages/NotFound";
 import Chat from "./pages/Chat";
 
 function App() {
+  const { auth } = useContext(AuthContext);
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={auth ? <Navigate to="/" /> : <Login />} />
+        <Route
+          path="/register"
+          element={auth ? <Navigate to="/" /> : <Register />}
+        />
         <Route element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
+          <Route
+            path="/"
+            element={auth ? <Home /> : <Navigate to="/login" />}
+          />
           <Route path="/chat" element={<ChatLayout />}>
             <Route index element={<Chat />} />
           </Route>

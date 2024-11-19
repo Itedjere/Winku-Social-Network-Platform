@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import * as Yup from "yup";
 
 export const passwordSchema = Yup.string()
@@ -24,3 +25,18 @@ export const registerSchema = Yup.object({
     .oneOf([true], "You must agree to the terms and conditions")
     .required("You must agree to the terms and conditions"),
 }).required();
+
+export const loginSchema = Yup.object({
+  username: Yup.string().required(),
+  password: Yup.string().required(),
+}).required();
+
+export const handleApolloErrors = (error) => {
+  if (error.graphQLErrors?.length > 0) {
+    error.graphQLErrors.forEach(({ message }) => toast.error(message));
+  } else if (error.networkError) {
+    toast.error("Network error occurred. Please try again.");
+  } else {
+    toast.error("An unexpected error occurred.");
+  }
+};

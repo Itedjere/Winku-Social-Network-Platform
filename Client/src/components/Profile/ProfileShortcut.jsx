@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 import {
   TfiBarChart,
   TfiBell,
@@ -12,8 +13,16 @@ import {
   TfiUser,
   TfiVideoCamera,
 } from "react-icons/tfi";
+import { toast } from "react-toastify";
 
 export default function ProfileShortcut() {
+  const { logoutUser } = useContext(AuthContext);
+
+  const logOut = (e) => {
+    e.preventDefault();
+    toast.success("You logged out successfully");
+    logoutUser();
+  };
   return (
     <div className="widget">
       <h4 className="widget-title">Shortcuts</h4>
@@ -80,7 +89,7 @@ export default function ProfileShortcut() {
         </li>
         <li>
           <TfiPowerOff />
-          <a href="landing.html" title="">
+          <a href="logout" onClick={logOut} title="Logout">
             Logout
           </a>
         </li>
