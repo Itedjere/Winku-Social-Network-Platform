@@ -51,6 +51,6 @@ export const changePasswordValidationSchema = Joi.object({
 });
 
 export const addPostValidationSchema = Joi.object({
-  postType: Joi.string().valid("MALE", "FEMALE").required(),
+  postType: Joi.string().valid("TEXT", "IMAGE", "VIDEO").required(),
   textContent: Joi.string().required(),
 });
