@@ -139,6 +139,7 @@ export const typeDefs = `#graphql
     input ADDPOSTINPUT {
         postType: AllowedPost!
         textContent: String!
+        mediaURL: String!
     }
 
     input ADDUSERINPUT {
