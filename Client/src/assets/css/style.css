@@ -92,7 +92,7 @@ button:focus {
   outline: none;
 }
 
-img {
+img, video {
   height: auto;
   max-width: 100%;
 }
@@ -1384,7 +1384,8 @@ form button {
   width: 100%;
 }
 
-.post-meta > img {
+.post-meta > img,
+.post-meta > video {
   float: left;
   width: 100%;
 }
@@ -9999,4 +10000,8 @@ aside.sidebar.full-style {
   width: 100%;
   left: 0;
   background: #ff0000;
+}
+
+.object-fill-cover {
+  object-fit: cover;
 }

@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { handleApolloErrors, mimeToPostType } from "../../utilities/utilities";
 import Spinner from "../Spinner/Spinner";
 import { AuthContext } from "../../contexts/AuthContext";
+import { GET_ALL_POSTS } from "../../utilities/graphql_queries";
 
 export default function PostForm() {
   const { auth } = useContext(AuthContext);
@@ -17,7 +18,9 @@ export default function PostForm() {
   const [
     createPost,
     { data: postData, loading: postLoading, error: postError },
-  ] = useMutation(UPLOAD_POST);
+  ] = useMutation(UPLOAD_POST, {
+    refetchQueries: [GET_ALL_POSTS],
+  });
 
   useEffect(() => {
     if (postData) {

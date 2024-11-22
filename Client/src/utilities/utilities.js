@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
 import * as Yup from "yup";
+import moment from "moment";
 
 export const passwordSchema = Yup.string()
   .required("Password is required")
@@ -49,4 +50,23 @@ export const mimeToPostType = {
   "video/mp4": "VIDEO",
   "video/mpeg": "VIDEO",
   "video/x-matroska": "VIDEO",
+};
+
+export const formatPostDate = (dateString) => {
+  const now = moment();
+  const postDate = moment(dateString);
+
+  if (now.diff(postDate, "seconds") < 60) {
+    return `${now.diff(postDate, "seconds")}s`; // Seconds ago
+  } else if (now.diff(postDate, "minutes") < 60) {
+    return `${now.diff(postDate, "minutes")}m`; // Minutes ago
+  } else if (now.diff(postDate, "hours") < 24) {
+    return `${now.diff(postDate, "hours")}h`; // Hours ago
+  } else if (now.diff(postDate, "days") < 7) {
+    return `${now.diff(postDate, "days")}d`; // Days ago
+  } else if (now.year() === postDate.year()) {
+    return postDate.format("MMMM D [at] h:mm a"); // Month Day at Time
+  } else {
+    return postDate.format("MMMM D, YYYY [at] h:mm a"); // Full Date for older years
+  }
 };

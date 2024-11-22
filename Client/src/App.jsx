@@ -40,7 +40,7 @@ function App() {
           <Route path="/chat" element={<ChatLayout />}>
             <Route index element={<Chat />} />
           </Route>
-          <Route path="/profile" element={<ProfileLayout />}>
+          <Route path="/profile/:profileId/" element={<ProfileLayout />}>
             <Route index element={<ProfileTimeline />} />
             <Route path="timeline" element={<ProfileTimeline />} />
             <Route path="photos" element={<ProfilePhotos />} />
