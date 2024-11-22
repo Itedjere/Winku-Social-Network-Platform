@@ -40,3 +40,13 @@ export const handleApolloErrors = (error) => {
     toast.error("An unexpected error occurred.");
   }
 };
+
+// Determine postType based on file MIME type
+export const mimeToPostType = {
+  "image/jpeg": "IMAGE",
+  "image/png": "IMAGE",
+  "image/gif": "IMAGE",
+  "video/mp4": "VIDEO",
+  "video/mpeg": "VIDEO",
+  "video/x-matroska": "VIDEO",
+};

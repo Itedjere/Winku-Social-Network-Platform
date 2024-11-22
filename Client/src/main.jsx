@@ -4,8 +4,10 @@ import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
+  createHttpLink,
   gql,
 } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 import { ToastContainer } from "react-toastify";
 
 import App from "./App.jsx";
@@ -16,8 +18,26 @@ import "./assets/css/color.css";
 import "./assets/css/responsive.css";
 import AuthContextProvider from "./contexts/AuthContext.jsx";
 
+const httpLink = createHttpLink({
+  uri: `${import.meta.env.VITE_SERVER_URL}/graphql`,
+});
+
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const userDetails = JSON.parse(localStorage.getItem("AuthUser"));
+  const token = userDetails?.token;
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    },
+  };
+});
+
 const client = new ApolloClient({
-  uri: "http://localhost:4040/graphql",
+  uri: `${import.meta.env.VITE_SERVER_URL}/graphql`,
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 

@@ -49,3 +49,25 @@ export const LOGIN_USER = gql`
     }
   }
 `;
+
+export const UPLOAD_POST = gql`
+  mutation AddPost($addPostPostInfo: ADDPOSTINPUT) {
+    addPost(postInfo: $addPostPostInfo) {
+      _id
+      mediaURL
+      postType
+      textContent
+      user {
+        _id
+        profile_photo
+        firstname
+        lastname
+      }
+      createdAt
+      comments
+      likedBy
+      dislikedBy
+      views
+    }
+  }
+`;
