@@ -5,6 +5,8 @@ import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHt
 import express from "express";
 import http from "http";
 import cors from "cors";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import "dotenv/config";
 import { typeDefs } from "./typeDefs.js";
 import { resolvers } from "./resolvers.js";
@@ -29,11 +31,36 @@ const server = new ApolloServer({
 // Ensure we wait for our server to start
 await server.start();
 
+// Serve static files
+// Simulate __dirname in ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/upload", express.json());
+// Set Cors
+app.use(
+  "/upload",
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
+
 // Apply multer middleware for file upload on specific GraphQL endpoint
-app.post("/graphql", upload.single("media"), (req, res, next) => {
-  req.file = req.file; // Attach the uploaded file to the request
-  next();
-});
+app.post(
+  "/upload",
+  authenticationMiddleware,
+  upload.single("media"),
+  (req, res, next) => {
+    if (!req.isAuth) {
+      throw new Error("User is not authenticated");
+    }
+    if (!req.file) {
+      return res.status(400).send("File upload failed.");
+    }
+    res.json({ fileUrl: `/uploads/${req.file.filename}` });
+  }
+);
 
 // Set up our Express middleware to handle CORS, body parsing,
 // and our expressMiddleware function.

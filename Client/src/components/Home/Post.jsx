@@ -1,5 +1,5 @@
 import React from "react";
-import admin2 from "../../assets/images/resources/admin2.jpg";
+
 import friendAvatar10 from "../../assets/images/resources/friend-avatar10.jpg";
 import userPost from "../../assets/images/resources/user-post.jpg";
 import Commet1 from "../../assets/images/resources/comet-1.jpg";
@@ -9,7 +9,6 @@ import Nearly1 from "../../assets/images/resources/nearly1.jpg";
 import Nearly6 from "../../assets/images/resources/nearly6.jpg";
 import Page1 from "../../assets/images/resources/page1.jpg";
 import {
-  FaCamera,
   FaComments,
   FaCss3,
   FaDribbble,
@@ -17,63 +16,19 @@ import {
   FaFacebook,
   FaGooglePlus,
   FaHtml5,
-  FaImage,
   FaInstagram,
-  FaMusic,
   FaPinterest,
   FaReply,
   FaShareAlt,
   FaTwitter,
-  FaVideo,
 } from "react-icons/fa";
 import { TfiHeart, TfiHeartBroken } from "react-icons/tfi";
+import PostForm from "../Post/PostForm";
 
 export default function Post() {
   return (
     <>
-      <div className="central-meta">
-        <div className="new-postbox">
-          <figure>
-            <img src={admin2} alt="" />
-          </figure>
-          <div className="newpst-input">
-            <form method="post">
-              <textarea rows="2" placeholder="write something"></textarea>
-              <div className="attachments">
-                <ul>
-                  <li>
-                    <FaMusic />
-                    <label className="fileContainer">
-                      <input type="file" />
-                    </label>
-                  </li>
-                  <li>
-                    <FaImage />
-                    <label className="fileContainer">
-                      <input type="file" />
-                    </label>
-                  </li>
-                  <li>
-                    <FaVideo />
-                    <label className="fileContainer">
-                      <input type="file" />
-                    </label>
-                  </li>
-                  <li>
-                    <FaCamera />
-                    <label className="fileContainer">
-                      <input type="file" />
-                    </label>
-                  </li>
-                  <li>
-                    <button type="submit">Post</button>
-                  </li>
-                </ul>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
+      <PostForm />
       <div className="loadMore">
         <div className="central-meta item">
           <div className="user-post">

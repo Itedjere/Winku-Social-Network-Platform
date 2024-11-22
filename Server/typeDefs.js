@@ -106,7 +106,6 @@ export const typeDefs = `#graphql
         textContent: String!
         mediaURL: String
         comments: [ID!]!
-        commentsCount: Int
         likedBy: [ID!]!
         dislikedBy: [ID!]!
         views: Int!
