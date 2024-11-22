@@ -4,3 +4,8 @@ Server/node_modules
 .env
 
 Client/node_modules
+
+# Uploads folder (files ignored, folder included)
+Server/uploads/*
+!Server/uploads/
+!Server/uploads/.gitkeep
