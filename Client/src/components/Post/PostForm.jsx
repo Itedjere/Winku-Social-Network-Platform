@@ -2,13 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import admin2 from "../../assets/images/resources/admin2.jpg";
 import { FaCamera } from "react-icons/fa";
-import { useMutation } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import { UPLOAD_POST } from "../../utilities/graphql_mutations";
 import { toast } from "react-toastify";
 import { handleApolloErrors, mimeToPostType } from "../../utilities/utilities";
 import Spinner from "../Spinner/Spinner";
 import { AuthContext } from "../../contexts/AuthContext";
-import { GET_ALL_POSTS } from "../../utilities/graphql_queries";
+import { CORE_POST_FIELDS } from "../../utilities/graphql_fragments";
 
 export default function PostForm() {
   const { auth } = useContext(AuthContext);
@@ -19,7 +19,19 @@ export default function PostForm() {
     createPost,
     { data: postData, loading: postLoading, error: postError },
   ] = useMutation(UPLOAD_POST, {
-    refetchQueries: [GET_ALL_POSTS],
+    update(cache, { data: { addPost } }) {
+      cache.modify({
+        fields: {
+          allPosts(existingPosts = []) {
+            const newPostRef = cache.writeFragment({
+              data: addPost,
+              fragment: CORE_POST_FIELDS,
+            });
+            return [newPostRef, ...existingPosts];
+          },
+        },
+      });
+    },
   });
 
   useEffect(() => {
