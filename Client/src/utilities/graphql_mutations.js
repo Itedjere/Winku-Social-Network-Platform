@@ -33,3 +33,23 @@ export const UPLOAD_POST = gql`
     }
   }
 `;
+
+export const LIKE_POST = gql`
+  mutation LikePost($postId: ID!) {
+    likePost(postId: $postId) {
+      _id
+      likedBy
+      dislikedBy
+    }
+  }
+`;
+
+export const DISLIKE_POST = gql`
+  mutation DislikePost($postId: ID!) {
+    dislikePost(postId: $postId) {
+      _id
+      likedBy
+      dislikedBy
+    }
+  }
+`;
