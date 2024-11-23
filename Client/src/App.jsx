@@ -21,6 +21,8 @@ import ProfileChangePassword from "./pages/ProfileChangePassword";
 import ChatLayout from "./components/layouts/ChatLayout";
 import NotFound from "./pages/NotFound";
 import Chat from "./pages/Chat";
+import PostComment from "./components/Post/PostComment";
+import HomeLayout from "./components/layouts/HomeLayout";
 
 function App() {
   const { auth } = useContext(AuthContext);
@@ -33,10 +35,10 @@ function App() {
           element={auth ? <Navigate to="/" /> : <Register />}
         />
         <Route element={<MainLayout />}>
-          <Route
-            path="/"
-            element={auth ? <Home /> : <Navigate to="/login" />}
-          />
+          <Route path="/" element={<HomeLayout />}>
+            <Route index element={auth ? <Home /> : <Navigate to="/login" />} />
+            <Route path="post/:postId" element={<PostComment />} />
+          </Route>
           <Route path="/chat" element={<ChatLayout />}>
             <Route index element={<Chat />} />
           </Route>

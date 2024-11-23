@@ -92,10 +92,9 @@ export const typeDefs = `#graphql
     type Comment {
         _id: ID!
         user: User!
-        post: Post!
+        postId: ID!
         textContent: String!
         replies: [ID!]!
-        repliesCount: Int
         createdAt: Date!
     }
 
@@ -112,9 +111,15 @@ export const typeDefs = `#graphql
         createdAt: Date!
     }
 
+    type PostComment {
+        post: Post!
+        comments: [Comment!]!
+    }
+
     type Query {
         user(userId: ID!): User
         allPosts: [Post!]!
+        singlePost(postId: ID!): PostComment!
         allComments(postId: ID!): [Comment!]!
         allReplies(commentId: ID!): [Reply!]!
     }

@@ -11,6 +11,7 @@ import { createReply } from "./services/createReply.js";
 import { fetchAllPosts } from "./services/fetchAllPosts.js";
 import { fetchAllComments } from "./services/fetchAllComments.js";
 import { fetchAllReplies } from "./services/fetchAllReplies.js";
+import { fetchSinglePost } from "./services/fetchSinglePost.js";
 
 export const resolvers = {
   Date: GraphQLDateTime,
@@ -29,6 +30,14 @@ export const resolvers = {
         return await fetchAllPosts();
       } catch (error) {
         console.error("Error fetching posts:", error);
+        throw error;
+      }
+    },
+    singlePost: async (parent, args, context) => {
+      try {
+        return await fetchSinglePost(args);
+      } catch (error) {
+        console.error("Error fetching post:", error);
         throw error;
       }
     },

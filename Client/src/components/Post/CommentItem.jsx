@@ -1,30 +1,43 @@
 import React from "react";
+import moment from "moment";
 import Commet1 from "../../assets/images/resources/comet-1.jpg";
 import { FaReply } from "react-icons/fa";
+import { formatPostDate } from "../../utilities/utilities";
+import { Link } from "react-router-dom";
 
-export default function CommentItem() {
+export default function CommentItem({ comment }) {
   return (
     <li>
       <div className="comet-avatar">
-        <img src={Commet1} alt="" />
+        <img
+          src={
+            comment?.user?.profile_photo
+              ? comment?.user?.profile_photo
+              : Commet1
+          }
+          alt=""
+        />
       </div>
       <div className="we-comment">
         <div className="coment-head">
           <h5>
-            <a href="time-line.html" title="">
-              Donald Trump
-            </a>
+            <Link
+              to={`/profile/${comment?.user?._id}/timeline`}
+              title={`${comment?.user?.firstname} ${comment?.user?.lastname}`}
+            >
+              {`${comment?.user?.firstname} ${comment?.user?.lastname}`}
+            </Link>
           </h5>
-          <span>1 week ago</span>
-          <a className="we-reply" href="#" title="Reply">
+          <span>{formatPostDate(comment?.createdAt)} ago</span>
+          <Link
+            className="we-reply"
+            to={`/reply/${comment?._id}`}
+            title="Reply"
+          >
             <FaReply />
-          </a>
+          </Link>
         </div>
-        <p>
-          we are working for the dance and sing songs. this video is very
-          awesome for the youngster. please vote this video and like our channel
-          <i className="em em-smiley"></i>
-        </p>
+        <p>{comment?.textContent}</p>
       </div>
     </li>
   );

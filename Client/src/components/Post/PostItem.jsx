@@ -15,7 +15,7 @@ import {
 } from "react-icons/fa";
 import { TfiHeart, TfiHeartBroken } from "react-icons/tfi";
 import { formatPostDate, handleApolloErrors } from "../../utilities/utilities";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { DISLIKE_POST, LIKE_POST } from "../../utilities/graphql_mutations";
 import { useMutation } from "@apollo/client";
 import { toast } from "react-toastify";
@@ -23,6 +23,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 
 export default function PostItem({ post }) {
   const { auth } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [likePost] = useMutation(LIKE_POST, {
     update(cache, { data: { likePost } }) {
       cache.modify({
@@ -118,9 +119,9 @@ export default function PostItem({ post }) {
             {`${post.user.firstname} ${post.user.lastname}`}
           </Link>
         </ins>
-        <span>published: {formatPostDate(post.createdAt)}</span>
+        <span>published: {formatPostDate(post.createdAt)} ago</span>
       </div>
-      <div className="post-meta">
+      <div className="post-meta" onClick={() => navigate(`/post/${post._id}`)}>
         <div className="description">{post.textContent}</div>
         {post.postType === "IMAGE" && (
           <img

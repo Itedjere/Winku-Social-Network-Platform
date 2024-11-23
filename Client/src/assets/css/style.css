@@ -92,7 +92,8 @@ button:focus {
   outline: none;
 }
 
-img, video {
+img,
+video {
   height: auto;
   max-width: 100%;
 }
@@ -1382,6 +1383,7 @@ form button {
   float: left;
   margin-top: 15px;
   width: 100%;
+  cursor: pointer;
 }
 
 .post-meta > img,

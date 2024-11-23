@@ -17,7 +17,6 @@ export default function Posts() {
         <div className="central-meta item" key={post._id}>
           <div className="user-post">
             <PostItem post={post} />
-            <Comments />
           </div>
         </div>
       ))}
