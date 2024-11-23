@@ -22,5 +22,5 @@ export const likePost = async (args, req) => {
   }
 
   await post.save();
-  return post;
+  return Post.findById(post._id).populate("user");
 };

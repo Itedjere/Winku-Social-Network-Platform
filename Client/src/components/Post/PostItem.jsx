@@ -1,5 +1,4 @@
-import React from "react";
-import userPost from "../../assets/images/resources/user-post.jpg";
+import React, { useContext } from "react";
 import friendAvatar10 from "../../assets/images/resources/friend-avatar10.jpg";
 import {
   FaComments,
@@ -15,10 +14,94 @@ import {
   FaTwitter,
 } from "react-icons/fa";
 import { TfiHeart, TfiHeartBroken } from "react-icons/tfi";
-import { formatPostDate } from "../../utilities/utilities";
+import { formatPostDate, handleApolloErrors } from "../../utilities/utilities";
 import { Link } from "react-router-dom";
+import { DISLIKE_POST, LIKE_POST } from "../../utilities/graphql_mutations";
+import { useMutation } from "@apollo/client";
+import { toast } from "react-toastify";
+import { AuthContext } from "../../contexts/AuthContext";
 
 export default function PostItem({ post }) {
+  const { auth } = useContext(AuthContext);
+  const [likePost] = useMutation(LIKE_POST, {
+    update(cache, { data: { likePost } }) {
+      cache.modify({
+        id: cache.identify(post),
+        fields: {
+          likedBy(existingLikes = []) {
+            // return new array from server
+            return likePost.likedBy;
+          },
+          dislikedBy(existingDislikes = []) {
+            return likePost.dislikedBy;
+          },
+        },
+      });
+    },
+  });
+
+  const [dislikePost] = useMutation(DISLIKE_POST, {
+    update(cache, { data: { dislikePost } }) {
+      cache.modify({
+        id: cache.identify(post),
+        fields: {
+          likedBy(existingLikes = []) {
+            // return new array from server
+            return dislikePost.likedBy;
+          },
+          dislikedBy(existingDislikes = []) {
+            // return new array from server
+            return dislikePost.dislikedBy;
+          },
+        },
+      });
+    },
+  });
+
+  const handleLikePost = async () => {
+    try {
+      const { data } = await likePost({
+        variables: {
+          postId: post._id,
+        },
+      });
+
+      if (data?.likePost) {
+        const indexOfUserId = data.likePost.likedBy.indexOf(auth?.user?._id);
+        if (indexOfUserId > -1) {
+          toast.success("You liked the post");
+        } else {
+          toast.success("You removed your like");
+        }
+      }
+    } catch (error) {
+      handleApolloErrors(error);
+    }
+  };
+
+  const handleDislikePost = async () => {
+    try {
+      const { data } = await dislikePost({
+        variables: {
+          postId: post._id,
+        },
+      });
+
+      if (data?.dislikePost) {
+        const indexOfUserId = data.dislikePost.dislikedBy.indexOf(
+          auth?.user?._id
+        );
+        if (indexOfUserId > -1) {
+          toast.success("You disliked the post");
+        } else {
+          toast.success("You removed your dislike");
+        }
+      }
+    } catch (error) {
+      handleApolloErrors(error);
+    }
+  };
+
   return (
     <div className="friend-info">
       <figure>
@@ -70,13 +153,13 @@ export default function PostItem({ post }) {
             </li>
             <li>
               <span className="like" data-toggle="tooltip" title="like">
-                <TfiHeart />
+                <TfiHeart onClick={handleLikePost} />
                 <ins>{post.likedBy.length}</ins>
               </span>
             </li>
             <li>
               <span className="dislike" data-toggle="tooltip" title="dislike">
-                <TfiHeartBroken />
+                <TfiHeartBroken onClick={handleDislikePost} />
                 <ins>{post.dislikedBy.length}</ins>
               </span>
             </li>

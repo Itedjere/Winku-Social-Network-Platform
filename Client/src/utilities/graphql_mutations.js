@@ -1,24 +1,12 @@
 import { gql } from "@apollo/client";
+import { CORE_POST_FIELDS, CORE_USER_FIELDS } from "./graphql_fragments";
 
 export const REGISTER_USER = gql`
+  ${CORE_USER_FIELDS}
   mutation RegisterUser($signupInfo: ADDUSERINPUT!) {
     signup(signupInfo: $signupInfo) {
       user {
-        _id
-        firstname
-        lastname
-        email
-        gender
-        username
-        profile_photo
-        cover_photo
-        country
-        city
-        state
-        about_me
-        dob
-        phone
-        website
+        ...CoreUserFields
       }
       token
     }
@@ -26,48 +14,42 @@ export const REGISTER_USER = gql`
 `;
 
 export const LOGIN_USER = gql`
+  ${CORE_USER_FIELDS}
   mutation LoginUser($loginInfo: LOGINUSERINPUT!) {
     login(loginInfo: $loginInfo) {
       token
       user {
-        _id
-        firstname
-        lastname
-        email
-        gender
-        username
-        profile_photo
-        cover_photo
-        country
-        city
-        state
-        about_me
-        dob
-        phone
-        website
+        ...CoreUserFields
       }
     }
   }
 `;
 
 export const UPLOAD_POST = gql`
+  ${CORE_POST_FIELDS}
   mutation AddPost($addPostPostInfo: ADDPOSTINPUT) {
     addPost(postInfo: $addPostPostInfo) {
+      ...CorePostFields
+    }
+  }
+`;
+
+export const LIKE_POST = gql`
+  mutation LikePost($postId: ID!) {
+    likePost(postId: $postId) {
       _id
-      mediaURL
-      postType
-      textContent
-      user {
-        _id
-        profile_photo
-        firstname
-        lastname
-      }
-      createdAt
-      comments
       likedBy
       dislikedBy
-      views
+    }
+  }
+`;
+
+export const DISLIKE_POST = gql`
+  mutation DislikePost($postId: ID!) {
+    dislikePost(postId: $postId) {
+      _id
+      likedBy
+      dislikedBy
     }
   }
 `;
