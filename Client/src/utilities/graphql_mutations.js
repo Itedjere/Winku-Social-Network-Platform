@@ -71,3 +71,20 @@ export const ADD_COMMENT = gql`
     }
   }
 `;
+
+export const ADD_REPLY = gql`
+  mutation AddReply($replyInfo: ADDREPLYINPUT!) {
+    addReply(replyInfo: $replyInfo) {
+      _id
+      user {
+        _id
+        firstname
+        lastname
+        profile_photo
+      }
+      commentId
+      textContent
+      createdAt
+    }
+  }
+`;

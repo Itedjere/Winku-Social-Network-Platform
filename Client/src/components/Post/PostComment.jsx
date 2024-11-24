@@ -21,8 +21,6 @@ export default function PostComment() {
     return <p>An error occured {error.message}</p>;
   }
 
-  console.log("Post", data);
-
   return (
     <div className="loadMore">
       <div className="central-meta item">

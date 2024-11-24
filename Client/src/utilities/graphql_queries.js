@@ -33,3 +33,34 @@ export const GET_POST = gql`
     }
   }
 `;
+
+export const GET_COMMENT = gql`
+  query GetComment($commentId: ID!) {
+    singleComment(commentId: $commentId) {
+      comment {
+        _id
+        createdAt
+        postId
+        replies
+        textContent
+        user {
+          _id
+          firstname
+          lastname
+          profile_photo
+        }
+      }
+      replies {
+        commentId
+        textContent
+        createdAt
+        user {
+          _id
+          firstname
+          lastname
+          profile_photo
+        }
+      }
+    }
+  }
+`;

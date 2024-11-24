@@ -12,7 +12,9 @@ export default function Comments({ comments, post }) {
           </li>
         )}
         {comments.map((comment) => (
-          <CommentItem key={comment?._id} comment={comment} />
+          <li key={comment?._id}>
+            <CommentItem comment={comment} />
+          </li>
         ))}
         {comments.length > 5 && (
           <li>

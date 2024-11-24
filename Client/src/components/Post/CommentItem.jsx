@@ -1,5 +1,4 @@
 import React from "react";
-import moment from "moment";
 import Commet1 from "../../assets/images/resources/comet-1.jpg";
 import { FaReply, FaComments } from "react-icons/fa";
 import { formatPostDate } from "../../utilities/utilities";
@@ -8,7 +7,7 @@ import { TfiHeart, TfiHeartBroken } from "react-icons/tfi";
 
 export default function CommentItem({ comment }) {
   return (
-    <li>
+    <>
       <div className="comet-avatar">
         <img
           src={
@@ -32,7 +31,7 @@ export default function CommentItem({ comment }) {
           <span>{formatPostDate(comment?.createdAt)} ago</span>
           <Link
             className="we-reply"
-            to={`/reply/${comment?._id}`}
+            to={`/comment/${comment?._id}`}
             title="Reply"
           >
             <FaReply />
@@ -62,6 +61,6 @@ export default function CommentItem({ comment }) {
           </ul>
         </div>
       </div>
-    </li>
+    </>
   );
 }

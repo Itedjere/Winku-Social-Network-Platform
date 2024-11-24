@@ -84,7 +84,7 @@ export const typeDefs = `#graphql
     type Reply {
         _id: ID!
         user: User!
-        comment: Comment!
+        commentId: ID!
         textContent: String!
         createdAt: Date!
     }
@@ -116,11 +116,17 @@ export const typeDefs = `#graphql
         comments: [Comment!]!
     }
 
+    type CommentReply {
+        comment: Comment!
+        replies: [Reply!]!
+    }
+
     type Query {
         user(userId: ID!): User
         allPosts: [Post!]!
         singlePost(postId: ID!): PostComment!
         allComments(postId: ID!): [Comment!]!
+        singleComment(commentId: ID!): CommentReply!
         allReplies(commentId: ID!): [Reply!]!
     }
 
@@ -136,7 +142,6 @@ export const typeDefs = `#graphql
     }
 
     input ADDREPLYINPUT {
-        postId: ID!
         commentId: ID!
         textContent: String!
     }

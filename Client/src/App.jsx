@@ -23,6 +23,7 @@ import NotFound from "./pages/NotFound";
 import Chat from "./pages/Chat";
 import PostComment from "./components/Post/PostComment";
 import HomeLayout from "./components/layouts/HomeLayout";
+import CommentReply from "./components/Post/CommentReply";
 
 function App() {
   const { auth } = useContext(AuthContext);
@@ -38,6 +39,7 @@ function App() {
           <Route path="/" element={<HomeLayout />}>
             <Route index element={auth ? <Home /> : <Navigate to="/login" />} />
             <Route path="post/:postId" element={<PostComment />} />
+            <Route path="comment/:commentId" element={<CommentReply />} />
           </Route>
           <Route path="/chat" element={<ChatLayout />}>
             <Route index element={<Chat />} />

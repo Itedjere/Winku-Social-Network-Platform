@@ -12,6 +12,7 @@ import { fetchAllPosts } from "./services/fetchAllPosts.js";
 import { fetchAllComments } from "./services/fetchAllComments.js";
 import { fetchAllReplies } from "./services/fetchAllReplies.js";
 import { fetchSinglePost } from "./services/fetchSinglePost.js";
+import { fetchSingleComment } from "./services/fetchSingleComment.js";
 
 export const resolvers = {
   Date: GraphQLDateTime,
@@ -46,6 +47,14 @@ export const resolvers = {
         return await fetchAllComments(args.postId);
       } catch (error) {
         console.error("Error fetching comments:", error);
+        throw error;
+      }
+    },
+    singleComment: async (parent, args, context) => {
+      try {
+        return await fetchSingleComment(args);
+      } catch (error) {
+        console.error("Error fetching comment:", error);
         throw error;
       }
     },
