@@ -3,15 +3,22 @@ import timeline1 from "../../assets/images/resources/timeline-1.jpg";
 import userAvatar from "../../assets/images/resources/user-avatar.jpg";
 import { FaCameraRetro } from "react-icons/fa";
 import { NavLink, useParams } from "react-router-dom";
+import { useQuery } from "@apollo/client";
+import { GET_USER_STATS } from "../../utilities/graphql_queries";
 
 export default function ProfileTopArea() {
   const { profileId } = useParams();
+  const { loading, error, data } = useQuery(GET_USER_STATS, {
+    variables: {
+      profileId,
+    },
+  });
 
   return (
     <section>
       <div className="feature-photo">
         <figure>
-          <img src={timeline1} alt="" />
+          <img src={timeline1} alt="Profile Photo" />
         </figure>
         <div className="add-btn">
           <span>1205 followers</span>

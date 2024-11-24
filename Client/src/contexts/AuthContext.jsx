@@ -7,10 +7,11 @@ export default function AuthContextProvider({ children }) {
 
   useEffect(() => {
     const authDetails = JSON.parse(localStorage.getItem("AuthUser"));
-    if (authDetails) {
-      setAuth(authDetails);
-    }
-  }, []);
+    if (!authDetails) return;
+    if (auth) return;
+
+    setAuth(authDetails);
+  }, [auth]);
 
   const handleAuthentication = (authDetails) => {
     setAuth(authDetails);

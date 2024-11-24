@@ -1,5 +1,24 @@
-import Post from "../components/Home/Post";
+import { useParams } from "react-router-dom";
+import PostForm from "../components/Post/PostForm";
+import Posts from "../components/Post/Posts";
+import { useQuery } from "@apollo/client";
+import { GET_USER_POSTS } from "../utilities/graphql_queries";
 
 export default function ProfileTimeline() {
-  return <Post />;
+  let { profileId } = useParams();
+  const { loading, error, data } = useQuery(GET_USER_POSTS, {
+    variables: {
+      profileId,
+    },
+  });
+
+  if (loading) return "Loading...";
+  if (error) return `Error! ${error.message}`;
+
+  return (
+    <>
+      <PostForm />
+      <Posts posts={data.userPosts} />
+    </>
+  );
 }

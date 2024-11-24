@@ -38,7 +38,7 @@ function App() {
         />
         <Route element={<MainLayout />}>
           <Route path="/" element={<HomeLayout />}>
-            <Route index element={auth ? <Home /> : <Navigate to="/login" />} />
+            <Route index element={<Home />} />
             <Route path="post/:postId" element={<PostComment />} />
             <Route path="comment/:commentId" element={<CommentReply />} />
           </Route>

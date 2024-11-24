@@ -10,6 +10,15 @@ export const GET_ALL_POSTS = gql`
   }
 `;
 
+export const GET_USER_POSTS = gql`
+  ${CORE_POST_FIELDS}
+  query UserPosts($profileId: ID!) {
+    userPosts(profileId: $profileId) {
+      ...CorePostFields
+    }
+  }
+`;
+
 export const GET_POST = gql`
   ${CORE_POST_FIELDS}
   query getPost($postId: ID!) {
@@ -61,6 +70,17 @@ export const GET_COMMENT = gql`
           profile_photo
         }
       }
+    }
+  }
+`;
+
+export const GET_USER_STATS = gql`
+  query GetUser($profileId: ID!) {
+    user(userId: $profileId) {
+      firstname
+      lastname
+      profile_photo
+      cover_photo
     }
   }
 `;

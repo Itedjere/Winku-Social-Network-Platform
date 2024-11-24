@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import { AuthContext } from "../../contexts/AuthContext";
+import React from "react";
 import {
   TfiBell,
   TfiClipboard,
@@ -12,16 +11,9 @@ import {
   TfiVideoCamera,
 } from "react-icons/tfi";
 import { toast } from "react-toastify";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function ProfileShortcut() {
-  const { auth, logoutUser } = useContext(AuthContext);
-  const navigate = useNavigate();
-
-  let { profileId } = useParams();
-  if (!profileId) {
-    profileId = auth.user._id;
-  }
   const logOut = (e) => {
     e.preventDefault();
     logoutUser();
@@ -46,25 +38,25 @@ export default function ProfileShortcut() {
         </li>
         <li>
           <TfiFiles />
-          <Link to={`/profile/${auth.user._id}/timeline`} title="My profile">
+          <Link to={`/profile`} title="My profile">
             My profile
           </Link>
         </li>
         <li>
           <TfiUser />
-          <Link to={`/profile/${profileId}/friends`} title="Friends">
+          <Link to={`/profile`} title="Friends">
             friends
           </Link>
         </li>
         <li>
           <TfiImage />
-          <Link to={`/profile/${profileId}/photos`} title="photos">
+          <Link to={`/profile`} title="photos">
             photos
           </Link>
         </li>
         <li>
           <TfiVideoCamera />
-          <Link to={`/profile/${profileId}/videos`} title="videos">
+          <Link to={`/profile`} title="videos">
             videos
           </Link>
         </li>
@@ -76,10 +68,7 @@ export default function ProfileShortcut() {
         </li>
         <li>
           <TfiBell />
-          <Link
-            to={`/profile/${profileId}/notifications`}
-            title="notifications"
-          >
+          <Link to={`/profile`} title="notifications">
             Notifications
           </Link>
         </li>

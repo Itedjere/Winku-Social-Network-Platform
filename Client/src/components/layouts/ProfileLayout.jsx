@@ -1,16 +1,13 @@
-import { useContext } from "react";
+import React from "react";
 import ProfileTopArea from "../Profile/ProfileTopArea";
 import ProfileEditInfo from "../Profile/ProfileEditInfo";
 import ProfileShortcut from "../Profile/ProfileShortcut";
 import Advertisement from "../Advertisement";
 import ProfileYourPage from "../Profile/ProfileYourPage";
 import ProfileWhoFollowing from "../Profile/ProfileWhoFollowing";
-import { Outlet, useParams } from "react-router-dom";
-import { AuthContext } from "../../contexts/AuthContext";
+import { Outlet } from "react-router-dom";
 
 export default function ProfileLayout() {
-  const { profileId } = useParams();
-  const { auth } = useContext(AuthContext);
   return (
     <>
       <ProfileTopArea />
@@ -22,7 +19,7 @@ export default function ProfileLayout() {
                 <div className="row" id="page-contents">
                   <div className="col-lg-3">
                     <aside className="sidebar static">
-                      {profileId === auth.user._id && <ProfileEditInfo />}
+                      <ProfileEditInfo />
                       <ProfileShortcut />
                     </aside>
                   </div>

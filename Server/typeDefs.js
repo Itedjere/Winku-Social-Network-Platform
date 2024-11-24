@@ -124,6 +124,7 @@ export const typeDefs = `#graphql
     type Query {
         user(userId: ID!): User
         allPosts: [Post!]!
+        userPosts(profileId: ID!): [Post!]!
         singlePost(postId: ID!): PostComment!
         allComments(postId: ID!): [Comment!]!
         singleComment(commentId: ID!): CommentReply!
