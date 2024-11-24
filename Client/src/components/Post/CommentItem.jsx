@@ -1,9 +1,10 @@
 import React from "react";
 import moment from "moment";
 import Commet1 from "../../assets/images/resources/comet-1.jpg";
-import { FaReply } from "react-icons/fa";
+import { FaReply, FaComments } from "react-icons/fa";
 import { formatPostDate } from "../../utilities/utilities";
 import { Link } from "react-router-dom";
+import { TfiHeart, TfiHeartBroken } from "react-icons/tfi";
 
 export default function CommentItem({ comment }) {
   return (
@@ -38,6 +39,28 @@ export default function CommentItem({ comment }) {
           </Link>
         </div>
         <p>{comment?.textContent}</p>
+        <div className="we-video-info" style={{ paddingBottom: 0 }}>
+          <ul style={{ margin: 0 }}>
+            <li style={{ marginBottom: 0 }}>
+              <span className="comment" data-toggle="tooltip" title="Comments">
+                <FaComments />
+                <ins>{comment.replies.length}</ins>
+              </span>
+            </li>
+            <li style={{ marginBottom: 0 }}>
+              <span className="like" data-toggle="tooltip" title="like">
+                <TfiHeart />
+                <ins>0</ins>
+              </span>
+            </li>
+            <li style={{ marginBottom: 0 }}>
+              <span className="dislike" data-toggle="tooltip" title="dislike">
+                <TfiHeartBroken />
+                <ins>0</ins>
+              </span>
+            </li>
+          </ul>
+        </div>
       </div>
     </li>
   );

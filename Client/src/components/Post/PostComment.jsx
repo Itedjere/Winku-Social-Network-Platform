@@ -28,7 +28,10 @@ export default function PostComment() {
       <div className="central-meta item">
         <div className="user-post">
           <PostItem post={data.singlePost.post} />
-          <Comments comments={data.singlePost.comments} />
+          <Comments
+            comments={data.singlePost.comments}
+            post={data.singlePost.post}
+          />
         </div>
       </div>
     </div>

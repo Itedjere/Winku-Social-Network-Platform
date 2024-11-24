@@ -1,33 +1,60 @@
-import React from "react";
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
+import InputEmoji from "react-input-emoji";
 import Commet1 from "../../assets/images/resources/comet-1.jpg";
+import { useMutation } from "@apollo/client";
+import { ADD_COMMENT } from "../../utilities/graphql_mutations";
+import { toast } from "react-toastify";
+import { handleApolloErrors } from "../../utilities/utilities";
+import { GET_POST } from "../../utilities/graphql_queries";
 
-export default function CommentForm() {
+export default function CommentForm({ post }) {
+  const { auth } = useContext(AuthContext);
+  const [text, setText] = useState("");
+  const [addComment] = useMutation(ADD_COMMENT, {
+    refetchQueries: [GET_POST],
+  });
+
+  const handleOnEnter = async () => {
+    // check if comment is empty or less than 20 characters
+    if (text.length < 15) {
+      return toast.error("Comment must be more than 15 characters");
+    }
+
+    // send feedbackt to server
+    try {
+      const { data } = await addComment({
+        variables: {
+          textContent: text,
+          postId: post._id,
+        },
+      });
+      if (data) {
+        toast.success("Comment added successfully!!!");
+      }
+    } catch (error) {
+      console.error("Add comment error", error);
+      handleApolloErrors(error);
+    }
+  };
+
   return (
     <li className="post-comment">
       <div className="comet-avatar">
-        <img src={Commet1} alt="" />
+        <img
+          src={auth.user.profile_photo ? auth.user.profile_photo : Commet1}
+          alt=""
+        />
       </div>
       <div className="post-comt-box">
         <form method="post">
-          <textarea placeholder="Post your comment"></textarea>
-          <div className="add-smiles">
-            <span className="em em-expressionless" title="add icon"></span>
-          </div>
-          <div className="smiles-bunch">
-            <i className="em em---1"></i>
-            <i className="em em-smiley"></i>
-            <i className="em em-anguished"></i>
-            <i className="em em-laughing"></i>
-            <i className="em em-angry"></i>
-            <i className="em em-astonished"></i>
-            <i className="em em-blush"></i>
-            <i className="em em-disappointed"></i>
-            <i className="em em-worried"></i>
-            <i className="em em-kissing_heart"></i>
-            <i className="em em-rage"></i>
-            <i className="em em-stuck_out_tongue"></i>
-          </div>
-          <button type="submit"></button>
+          <InputEmoji
+            value={text}
+            onChange={setText}
+            cleanOnEnter
+            onEnter={handleOnEnter}
+            placeholder="Post your comment"
+          />
         </form>
       </div>
     </li>

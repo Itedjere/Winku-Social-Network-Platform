@@ -2,7 +2,7 @@ import React from "react";
 import CommentItem from "./CommentItem";
 import CommentForm from "./CommentForm";
 
-export default function Comments({ comments }) {
+export default function Comments({ comments, post }) {
   return (
     <div className="coment-area">
       <ul className="we-comet">
@@ -21,7 +21,7 @@ export default function Comments({ comments }) {
             </a>
           </li>
         )}
-        <CommentForm />
+        <CommentForm post={post} />
       </ul>
     </div>
   );

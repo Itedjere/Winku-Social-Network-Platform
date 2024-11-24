@@ -138,97 +138,102 @@ export default function PostItem({ post }) {
             Your browser does not support the video tag.
           </video>
         )}
-        <div className="we-video-info">
-          <ul>
-            <li>
-              <span className="views" data-toggle="tooltip" title="views">
-                <FaEye />
-                <ins>1</ins>
-              </span>
-            </li>
-            <li>
-              <span className="comment" data-toggle="tooltip" title="Comments">
-                <FaComments />
-                <ins>{post.comments.length}</ins>
-              </span>
-            </li>
-            <li>
-              <span className="like" data-toggle="tooltip" title="like">
-                <TfiHeart onClick={handleLikePost} />
-                <ins>{post.likedBy.length}</ins>
-              </span>
-            </li>
-            <li>
-              <span className="dislike" data-toggle="tooltip" title="dislike">
-                <TfiHeartBroken onClick={handleDislikePost} />
-                <ins>{post.dislikedBy.length}</ins>
-              </span>
-            </li>
-            <li className="social-media">
-              <div className="menu">
-                <div className="btn trigger">
-                  <FaShareAlt className="fa" />
-                </div>
-                <div className="rotater">
-                  <div className="btn btn-icon">
-                    <a href="#" title="">
-                      <FaHtml5 />
-                    </a>
-                  </div>
-                </div>
-                <div className="rotater">
-                  <div className="btn btn-icon">
-                    <a href="#" title="">
-                      <FaFacebook />
-                    </a>
-                  </div>
-                </div>
-                <div className="rotater">
-                  <div className="btn btn-icon">
-                    <a href="#" title="">
-                      <FaGooglePlus />
-                    </a>
-                  </div>
-                </div>
-                <div className="rotater">
-                  <div className="btn btn-icon">
-                    <a href="#" title="">
-                      <FaTwitter />
-                    </a>
-                  </div>
-                </div>
-                <div className="rotater">
-                  <div className="btn btn-icon">
-                    <a href="#" title="">
-                      <FaCss3 />
-                    </a>
-                  </div>
-                </div>
-                <div className="rotater">
-                  <div className="btn btn-icon">
-                    <a href="#" title="">
-                      <FaInstagram />
-                    </a>
-                  </div>
-                </div>
-                <div className="rotater">
-                  <div className="btn btn-icon">
-                    <a href="#" title="">
-                      <FaDribbble />
-                    </a>
-                  </div>
-                </div>
-                <div className="rotater">
-                  <div className="btn btn-icon">
-                    <a href="#" title="">
-                      <FaPinterest />
-                    </a>
-                  </div>
+      </div>
+      <div className="we-video-info">
+        <ul>
+          <li>
+            <span className="views" data-toggle="tooltip" title="views">
+              <FaEye />
+              <ins>1</ins>
+            </span>
+          </li>
+          <li onClick={() => navigate(`/post/${post._id}`)}>
+            <span
+              className="comment"
+              data-toggle="tooltip"
+              title="Comments"
+              style={{ cursor: "pointer" }}
+            >
+              <FaComments />
+              <ins>{post.comments.length}</ins>
+            </span>
+          </li>
+          <li>
+            <span className="like" data-toggle="tooltip" title="like">
+              <TfiHeart onClick={handleLikePost} />
+              <ins>{post.likedBy.length}</ins>
+            </span>
+          </li>
+          <li>
+            <span className="dislike" data-toggle="tooltip" title="dislike">
+              <TfiHeartBroken onClick={handleDislikePost} />
+              <ins>{post.dislikedBy.length}</ins>
+            </span>
+          </li>
+          <li className="social-media">
+            <div className="menu">
+              <div className="btn trigger">
+                <FaShareAlt className="fa" />
+              </div>
+              <div className="rotater">
+                <div className="btn btn-icon">
+                  <a href="#" title="">
+                    <FaHtml5 />
+                  </a>
                 </div>
               </div>
-            </li>
-          </ul>
-        </div>
+              <div className="rotater">
+                <div className="btn btn-icon">
+                  <a href="#" title="">
+                    <FaFacebook />
+                  </a>
+                </div>
+              </div>
+              <div className="rotater">
+                <div className="btn btn-icon">
+                  <a href="#" title="">
+                    <FaGooglePlus />
+                  </a>
+                </div>
+              </div>
+              <div className="rotater">
+                <div className="btn btn-icon">
+                  <a href="#" title="">
+                    <FaTwitter />
+                  </a>
+                </div>
+              </div>
+              <div className="rotater">
+                <div className="btn btn-icon">
+                  <a href="#" title="">
+                    <FaCss3 />
+                  </a>
+                </div>
+              </div>
+              <div className="rotater">
+                <div className="btn btn-icon">
+                  <a href="#" title="">
+                    <FaInstagram />
+                  </a>
+                </div>
+              </div>
+              <div className="rotater">
+                <div className="btn btn-icon">
+                  <a href="#" title="">
+                    <FaDribbble />
+                  </a>
+                </div>
+              </div>
+              <div className="rotater">
+                <div className="btn btn-icon">
+                  <a href="#" title="">
+                    <FaPinterest />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   );

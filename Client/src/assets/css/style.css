@@ -1955,12 +1955,12 @@ li.post-comment .comet-avatar {
   transform: scale(1.1);
 }
 
-.post-comt-box form button {
+/* .post-comt-box form button {
   bottom: 2px;
   position: absolute;
   right: 0;
   background: none;
-}
+} */
 
 /*--- search friend widget ---*/
 
