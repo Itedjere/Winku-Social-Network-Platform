@@ -137,7 +137,7 @@ export const resolvers = {
         throw error;
       }
     },
-    addComment: async (parent, args, context) => {
+    addReply: async (parent, args, context) => {
       try {
         const { req } = context;
         if (!req.isAuth) {

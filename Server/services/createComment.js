@@ -12,7 +12,7 @@ export const createComment = async (args, req) => {
   }
 
   // create a new comment
-  const comment = new Comment({ userId, textContent, postId });
+  const comment = new Comment({ user: userId, textContent, postId });
   await comment.save();
 
   // update the post comment array
@@ -20,7 +20,5 @@ export const createComment = async (args, req) => {
   await post.save();
 
   // Return the newly created comment, populated with user info if needed
-  return await comment
-    .populate("userId", "firstname lastname profile_photo")
-    .execPopulate();
+  return Comment.findById(comment._id).populate("user");
 };
