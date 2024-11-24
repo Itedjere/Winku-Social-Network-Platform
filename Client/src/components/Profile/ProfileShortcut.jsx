@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import {
-  TfiBarChart,
   TfiBell,
   TfiClipboard,
   TfiCommentsSmiley,
@@ -9,19 +8,25 @@ import {
   TfiImage,
   TfiMouseAlt,
   TfiPowerOff,
-  TfiShare,
   TfiUser,
   TfiVideoCamera,
 } from "react-icons/tfi";
 import { toast } from "react-toastify";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 export default function ProfileShortcut() {
-  const { logoutUser } = useContext(AuthContext);
+  const { auth, logoutUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
+  let { profileId } = useParams();
+  if (!profileId) {
+    profileId = auth.user._id;
+  }
   const logOut = (e) => {
     e.preventDefault();
-    toast.success("You logged out successfully");
     logoutUser();
+    toast.success("You logged out successfully");
+    navigate("/login");
   };
   return (
     <div className="widget">
@@ -29,63 +34,54 @@ export default function ProfileShortcut() {
       <ul className="naves">
         <li>
           <TfiClipboard />
-          <a href="newsfeed.html" title="">
+          <Link to="/" title="Home">
             News feed
-          </a>
+          </Link>
         </li>
         <li>
           <TfiMouseAlt />
-          <a href="inbox.html" title="">
+          <Link to="/chat" title="Chat">
             Inbox
-          </a>
+          </Link>
         </li>
         <li>
           <TfiFiles />
-          <a href="fav-page.html" title="">
-            My pages
-          </a>
+          <Link to={`/profile/${auth.user._id}/timeline`} title="My profile">
+            My profile
+          </Link>
         </li>
         <li>
           <TfiUser />
-          <a href="timeline-friends.html" title="">
+          <Link to={`/profile/${profileId}/friends`} title="Friends">
             friends
-          </a>
+          </Link>
         </li>
         <li>
           <TfiImage />
-          <a href="timeline-photos.html" title="">
-            images
-          </a>
+          <Link to={`/profile/${profileId}/photos`} title="photos">
+            photos
+          </Link>
         </li>
         <li>
           <TfiVideoCamera />
-          <a href="timeline-videos.html" title="">
+          <Link to={`/profile/${profileId}/videos`} title="videos">
             videos
-          </a>
+          </Link>
         </li>
         <li>
           <TfiCommentsSmiley />
-          <a href="messages.html" title="">
+          <Link to={`/chat`} title="chat">
             Messages
-          </a>
+          </Link>
         </li>
         <li>
           <TfiBell />
-          <a href="notifications.html" title="">
+          <Link
+            to={`/profile/${profileId}/notifications`}
+            title="notifications"
+          >
             Notifications
-          </a>
-        </li>
-        <li>
-          <TfiShare />
-          <a href="people-nearby.html" title="">
-            People Nearby
-          </a>
-        </li>
-        <li>
-          <TfiBarChart />
-          <a href="insights.html" title="">
-            insights
-          </a>
+          </Link>
         </li>
         <li>
           <TfiPowerOff />

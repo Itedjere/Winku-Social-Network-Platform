@@ -6,17 +6,19 @@ import {
   TfiMouseAlt,
   TfiSettings,
 } from "react-icons/tfi";
+import { Link, useParams } from "react-router-dom";
 
 export default function ProfileEditInfo() {
+  const { profileId } = useParams();
   return (
     <div className="widget">
       <h4 className="widget-title">Edit info</h4>
       <ul className="naves">
         <li>
           <TfiInfoAlt />
-          <a title="" href="edit-profile-basic.html">
+          <Link title="" to={`/profile/${profileId}/edit-basics`}>
             Basic info
-          </a>
+          </Link>
         </li>
         <li>
           <TfiMouseAlt />
@@ -26,21 +28,21 @@ export default function ProfileEditInfo() {
         </li>
         <li>
           <TfiHeart />
-          <a title="" href="edit-interest.html">
+          <Link title="" to={`/profile/${profileId}/interests`}>
             My interests
-          </a>
+          </Link>
         </li>
         <li>
           <TfiSettings />
-          <a title="" href="edit-account-setting.html">
+          <Link title="" to={`/profile/${profileId}/edit-account-settings`}>
             account setting
-          </a>
+          </Link>
         </li>
         <li>
           <TfiLock />
-          <a title="" href="edit-password.html">
+          <Link title="" to={`/profile/${profileId}/change-password`}>
             change password
-          </a>
+          </Link>
         </li>
       </ul>
     </div>

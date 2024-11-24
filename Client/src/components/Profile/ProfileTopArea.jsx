@@ -2,8 +2,11 @@ import React from "react";
 import timeline1 from "../../assets/images/resources/timeline-1.jpg";
 import userAvatar from "../../assets/images/resources/user-avatar.jpg";
 import { FaCameraRetro } from "react-icons/fa";
+import { NavLink, useParams } from "react-router-dom";
 
 export default function ProfileTopArea() {
+  const { profileId } = useParams();
+
   return (
     <section>
       <div className="feature-photo">
@@ -47,52 +50,51 @@ export default function ProfileTopArea() {
                     <span>Group Admin</span>
                   </li>
                   <li>
-                    <a
-                      className="active"
-                      href="time-line.html"
+                    <NavLink
+                      to={`/profile/${profileId}/timeline`}
                       title=""
                       data-ripple=""
                     >
                       time line
-                    </a>
-                    <a
-                      className=""
-                      href="timeline-photos.html"
+                    </NavLink>
+                    <NavLink
+                      to={`/profile/${profileId}/photos`}
                       title=""
                       data-ripple=""
                     >
                       Photos
-                    </a>
-                    <a
-                      className=""
-                      href="timeline-videos.html"
+                    </NavLink>
+                    <NavLink
+                      to={`/profile/${profileId}/videos`}
                       title=""
                       data-ripple=""
                     >
                       Videos
-                    </a>
-                    <a
-                      className=""
-                      href="timeline-friends.html"
+                    </NavLink>
+                    <NavLink
+                      to={`/profile/${profileId}/friends`}
                       title=""
                       data-ripple=""
                     >
                       Friends
-                    </a>
-                    <a
-                      className=""
-                      href="timeline-groups.html"
+                    </NavLink>
+                    <NavLink
+                      to={`/profile/${profileId}/followers`}
                       title=""
                       data-ripple=""
                     >
-                      Groups
-                    </a>
-                    <a className="" href="about.html" title="" data-ripple="">
+                      followers
+                    </NavLink>
+                    <NavLink
+                      to={`/profile/${profileId}/about`}
+                      title=""
+                      data-ripple=""
+                    >
                       about
-                    </a>
-                    <a className="" href="#" title="" data-ripple="">
-                      more
-                    </a>
+                    </NavLink>
+                    <NavLink to="/chat" title="" data-ripple="">
+                      chat
+                    </NavLink>
                   </li>
                 </ul>
               </div>

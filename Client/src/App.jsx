@@ -24,6 +24,7 @@ import Chat from "./pages/Chat";
 import PostComment from "./components/Post/PostComment";
 import HomeLayout from "./components/layouts/HomeLayout";
 import CommentReply from "./components/Post/CommentReply";
+import ProfileWhoFollowing from "./components/Profile/ProfileWhoFollowing";
 
 function App() {
   const { auth } = useContext(AuthContext);
@@ -55,6 +56,7 @@ function App() {
             <Route path="notifications" element={<Notifications />} />
             <Route path="edit-basics" element={<ProfileEditBasics />} />
             <Route path="interests" element={<ProfileEditInterest />} />
+            <Route path="followers" element={<ProfileWhoFollowing />} />
             <Route
               path="edit-account-settings"
               element={<ProfileEditAccountSettings />}
