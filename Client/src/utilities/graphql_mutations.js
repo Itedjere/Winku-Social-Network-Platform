@@ -113,3 +113,19 @@ export const UPDATE_PASSWORD = gql`
     }
   }
 `;
+
+export const ADD_USER_INTERESTS = gql`
+  mutation AddUserInterests($interest: String!) {
+    addInterests(interest: $interest) {
+      interests
+    }
+  }
+`;
+
+export const REMOVE_USER_INTEREST = gql`
+  mutation RemoveUserInterest($interest: String!) {
+    removeInterest(interest: $interest) {
+      interests
+    }
+  }
+`;

@@ -84,3 +84,11 @@ export const GET_USER_STATS = gql`
     }
   }
 `;
+
+export const GET_USER_INTERESTS = gql`
+  query GetAllUserInterest($profileId: ID!) {
+    allInterests(profileId: $profileId) {
+      interests
+    }
+  }
+`;

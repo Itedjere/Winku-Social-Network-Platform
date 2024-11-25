@@ -129,6 +129,7 @@ export const typeDefs = `#graphql
         allComments(postId: ID!): [Comment!]!
         singleComment(commentId: ID!): CommentReply!
         allReplies(commentId: ID!): [Reply!]!
+        allInterests(profileId: ID!): User!
     }
 
     type Mutation {
@@ -141,6 +142,8 @@ export const typeDefs = `#graphql
         addReply(replyInfo: ADDREPLYINPUT!): Reply!
         editProfileBasic(basicInfo: PROFILEBASICINPUT!): User!
         changePassword(passwordInfo: CHANGEPASSWORDINPUT!): GenericSuccess!
+        addInterests(interest: String!): User!
+        removeInterest(interest: String!): User!
     }
 
     input PROFILEBASICINPUT {

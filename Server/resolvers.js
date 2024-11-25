@@ -15,6 +15,8 @@ import { fetchSinglePost } from "./services/fetchSinglePost.js";
 import { fetchSingleComment } from "./services/fetchSingleComment.js";
 import { fetchUserPosts } from "./services/fetchUserPosts.js";
 import { updateProfileBasic } from "./services/updateProfileBasic.js";
+import { addUserInterests } from "./services/addUserInterests.js";
+import { removeUserInterest } from "./services/removeUserInterest.js";
 
 export const resolvers = {
   Date: GraphQLDateTime,
@@ -73,6 +75,14 @@ export const resolvers = {
         return await fetchAllReplies(args.commentId);
       } catch (error) {
         console.error("Error fetching replies:", error);
+        throw error;
+      }
+    },
+    allInterests: async (parent, args, context) => {
+      try {
+        return await retrieveUser(args.profileId);
+      } catch (error) {
+        console.error("Error fetching interests:", error);
         throw error;
       }
     },
@@ -177,6 +187,30 @@ export const resolvers = {
         return await updateProfileBasic(args, req);
       } catch (error) {
         console.error("Failed to update profile", error);
+        throw error;
+      }
+    },
+    addInterests: async (parent, args, context) => {
+      try {
+        const { req } = context;
+        if (!req.isAuth) {
+          throw new Error("User is not authenticated");
+        }
+        return await addUserInterests(args, req);
+      } catch (error) {
+        console.error("Failed to add interest", error);
+        throw error;
+      }
+    },
+    removeInterest: async (parent, args, context) => {
+      try {
+        const { req } = context;
+        if (!req.isAuth) {
+          throw new Error("User is not authenticated");
+        }
+        return await removeUserInterest(args, req);
+      } catch (error) {
+        console.error("Failed to remove interest", error);
         throw error;
       }
     },
