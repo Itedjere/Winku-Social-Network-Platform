@@ -27,6 +27,14 @@ export const registerSchema = Yup.object({
     .required("You must agree to the terms and conditions"),
 }).required();
 
+export const changePasswordSchema = Yup.object({
+  current_password: Yup.string().required(),
+  new_password: passwordSchema,
+  confirm_password: Yup.string()
+    .required("Confirm password is required")
+    .oneOf([Yup.ref("new_password"), null], "Passwords must match"),
+});
+
 export const profileEditBasicSchema = Yup.object({
   firstname: Yup.string().required().min(3),
   lastname: Yup.string().required().min(3),

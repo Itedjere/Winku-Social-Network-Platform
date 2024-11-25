@@ -104,3 +104,12 @@ export const UPDATE_PROFILE_BASIC_EDITS = gql`
     }
   }
 `;
+
+export const UPDATE_PASSWORD = gql`
+  mutation ChangePassword($passwordInfo: CHANGEPASSWORDINPUT!) {
+    changePassword(passwordInfo: $passwordInfo) {
+      message
+      status
+    }
+  }
+`;

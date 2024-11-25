@@ -53,14 +53,22 @@ function App() {
             <Route path="groups" element={<ProfileGroups />} />
             <Route path="about" element={<ProfileAbout />} />
             <Route path="notifications" element={<Notifications />} />
-            <Route path="edit-basics" element={<ProfileEditBasics />} />
+            <Route
+              path="edit-basics"
+              element={auth ? <ProfileEditBasics /> : <Navigate to="/login" />}
+            />
             <Route path="interests" element={<ProfileEditInterest />} />
             <Route path="followers" element={<ProfileWhoFollowing />} />
             <Route
               path="edit-account-settings"
               element={<ProfileEditAccountSettings />}
             />
-            <Route path="change-password" element={<ProfileChangePassword />} />
+            <Route
+              path="change-password"
+              element={
+                auth ? <ProfileChangePassword /> : <Navigate to="/login" />
+              }
+            />
           </Route>
         </Route>
         <Route path="*" element={<NotFound />} />

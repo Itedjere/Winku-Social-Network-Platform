@@ -37,5 +37,8 @@ export const changePassword = async (passwordInfo, userId) => {
   await user.save();
 
   // Return success message
-  return { status: true, message: "Password changed successfully" };
+  return {
+    status: true,
+    message: "Password changed successfully. Please login with new password",
+  };
 };

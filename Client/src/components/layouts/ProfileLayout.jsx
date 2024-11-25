@@ -21,8 +21,8 @@ export default function ProfileLayout() {
                 <div className="row" id="page-contents">
                   <div className="col-lg-3">
                     <aside className="sidebar static">
-                      {auth && <ProfileEditInfo />}
                       <ProfileShortcut />
+                      {auth && <ProfileEditInfo />}
                     </aside>
                   </div>
                   <div className="col-lg-6">
