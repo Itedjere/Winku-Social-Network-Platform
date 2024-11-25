@@ -19,6 +19,24 @@ export const signupValidationSchema = Joi.object({
   email: Joi.string().email().required(),
 });
 
+export const profileEditBasicValidationSchema = Joi.object({
+  firstname: Joi.string().min(3).required(),
+  lastname: Joi.string().min(3).required(),
+  phone: Joi.string()
+    .pattern(new RegExp("^(\\+234|0)[789]\\d{9}$"))
+    .required()
+    .messages({
+      "string.pattern.base": "Enter a valid phone number",
+      "string.empty": "Phone number is required",
+    }),
+  gender: Joi.string().valid("MALE", "FEMALE").required(),
+  country: Joi.string().required(),
+  dob: Joi.date().optional(),
+  city: Joi.string().optional(),
+  state: Joi.string().optional(),
+  about_me: Joi.string().optional(),
+});
+
 export const loginValidationSchema = Joi.object({
   username: Joi.string().required(),
   password: Joi.string().required(),

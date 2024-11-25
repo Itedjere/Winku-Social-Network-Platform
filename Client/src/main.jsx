@@ -16,6 +16,7 @@ import "./assets/css/main.min.css";
 import "./assets/css/style.css";
 import "./assets/css/color.css";
 import "./assets/css/responsive.css";
+import "react-loading-skeleton/dist/skeleton.css";
 import AuthContextProvider from "./contexts/AuthContext.jsx";
 
 const httpLink = createHttpLink({

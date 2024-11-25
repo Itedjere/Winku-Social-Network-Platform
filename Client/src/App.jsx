@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext } from "./contexts/AuthContext";
-import Error from "./pages/NotFound";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import ProfileTimeline from "./pages/ProfileTimeline";

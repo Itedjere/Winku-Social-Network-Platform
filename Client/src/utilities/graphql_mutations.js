@@ -88,3 +88,19 @@ export const ADD_REPLY = gql`
     }
   }
 `;
+
+export const UPDATE_PROFILE_BASIC_EDITS = gql`
+  mutation UPDATE_BASIC_PROFIE($basicInfo: PROFILEBASICINPUT!) {
+    editProfileBasic(basicInfo: $basicInfo) {
+      firstname
+      lastname
+      about_me
+      city
+      state
+      country
+      dob
+      phone
+      gender
+    }
+  }
+`;

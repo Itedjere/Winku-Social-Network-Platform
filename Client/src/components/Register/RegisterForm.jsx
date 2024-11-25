@@ -19,6 +19,7 @@ export default function RegisterForm() {
       error: registrationError,
     },
   ] = useMutation(REGISTER_USER);
+
   const {
     register,
     handleSubmit,

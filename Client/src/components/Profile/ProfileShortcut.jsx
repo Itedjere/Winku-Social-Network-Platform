@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   TfiBell,
   TfiClipboard,
@@ -11,9 +11,12 @@ import {
   TfiVideoCamera,
 } from "react-icons/tfi";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
 
 export default function ProfileShortcut() {
+  const { logoutUser } = useContext(AuthContext);
+  const navigate = useNavigate();
   const logOut = (e) => {
     e.preventDefault();
     logoutUser();

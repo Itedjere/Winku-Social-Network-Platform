@@ -27,6 +27,22 @@ export const registerSchema = Yup.object({
     .required("You must agree to the terms and conditions"),
 }).required();
 
+export const profileEditBasicSchema = Yup.object({
+  firstname: Yup.string().required().min(3),
+  lastname: Yup.string().required().min(3),
+  phone: Yup.string()
+    .matches(/^(\+234|0)[789]\d{9}$/, "Enter a valid phone number")
+    .required("Phone number is required"),
+  dob: Yup.date().nullable(),
+  gender: Yup.string()
+    .oneOf(["MALE", "FEMALE"], "Please select a valid gender")
+    .required("Gender is required"),
+  city: Yup.string().nullable(),
+  state: Yup.string().nullable(),
+  country: Yup.string().required(),
+  about_me: Yup.string().nullable(),
+}).required();
+
 export const loginSchema = Yup.object({
   username: Yup.string().required(),
   password: Yup.string().required(),
@@ -69,4 +85,10 @@ export const formatPostDate = (dateString) => {
   } else {
     return postDate.format("MMMM D, YYYY [at] h:mm a"); // Full Date for older years
   }
+};
+
+export const formatDate = (date) => {
+  if (!date) return ""; // Handle null or undefined dates
+  const isoDate = new Date(date).toISOString(); // Convert to ISO format
+  return isoDate.slice(0, 10); // Extract only the date part
 };

@@ -134,12 +134,25 @@ export const typeDefs = `#graphql
     type Mutation {
         signup(signupInfo: ADDUSERINPUT!): AuthenticatedUser!
         login(loginInfo: LOGINUSERINPUT!): AuthenticatedUser!
-        changePassword(passwordInfo: CHANGEPASSWORDINPUT!): GenericSuccess!
         addPost(postInfo: ADDPOSTINPUT): Post!
         likePost(postId: ID!): Post!
         dislikePost(postId: ID!): Post!
         addComment(postId: ID!, textContent: String!): Comment!
         addReply(replyInfo: ADDREPLYINPUT!): Reply!
+        editProfileBasic(basicInfo: PROFILEBASICINPUT!): User!
+        changePassword(passwordInfo: CHANGEPASSWORDINPUT!): GenericSuccess!
+    }
+
+    input PROFILEBASICINPUT {
+        firstname: String!,
+        lastname: String!
+        phone: String
+        dob: Date
+        gender: Gender!
+        city: String
+        state: String
+        country: String!
+        about_me: String
     }
 
     input ADDREPLYINPUT {

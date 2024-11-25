@@ -14,6 +14,7 @@ import { fetchAllReplies } from "./services/fetchAllReplies.js";
 import { fetchSinglePost } from "./services/fetchSinglePost.js";
 import { fetchSingleComment } from "./services/fetchSingleComment.js";
 import { fetchUserPosts } from "./services/fetchUserPosts.js";
+import { updateProfileBasic } from "./services/updateProfileBasic.js";
 
 export const resolvers = {
   Date: GraphQLDateTime,
@@ -164,6 +165,18 @@ export const resolvers = {
         return await createReply(args, req);
       } catch (error) {
         console.error("Failed to reply on comment:", error);
+        throw error;
+      }
+    },
+    editProfileBasic: async (parent, args, context) => {
+      try {
+        const { req } = context;
+        if (!req.isAuth) {
+          throw new Error("User is not authenticated");
+        }
+        return await updateProfileBasic(args, req);
+      } catch (error) {
+        console.error("Failed to update profile", error);
         throw error;
       }
     },
