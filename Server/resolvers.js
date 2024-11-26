@@ -18,6 +18,8 @@ import { updateProfileBasic } from "./services/updateProfileBasic.js";
 import { addUserInterests } from "./services/addUserInterests.js";
 import { removeUserInterest } from "./services/removeUserInterest.js";
 import { updateUserSettings } from "./services/updateUserSettings.js";
+import { createFriendRequest } from "./services/createFriendRequest.js";
+import { Friend } from "./models/friendModel.js";
 
 export const resolvers = {
   Date: GraphQLDateTime,
@@ -238,6 +240,30 @@ export const resolvers = {
         console.error("Failed to update settings:", error);
         throw error;
       }
+    },
+    sendFriendRequest: async (parent, args, context) => {
+      try {
+        const { req } = context;
+        if (!req.isAuth) {
+          throw new Error("User is not authenticated");
+        }
+        return await createFriendRequest(args, req);
+      } catch (error) {
+        console.error("Failed to send friend request:", error);
+        throw error;
+      }
+    },
+  },
+  User: {
+    async friendCount(parent) {
+      // Count friends where the user is either `user` or `friend`
+      const count = await Friend.countDocuments({
+        $or: [
+          { user: parent._id, status: "ACCEPTED" },
+          { friend: parent._id, status: "ACCEPTED" },
+        ],
+      });
+      return count;
     },
   },
 };

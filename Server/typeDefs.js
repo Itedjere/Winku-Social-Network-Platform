@@ -69,6 +69,7 @@ export const typeDefs = `#graphql
         profile_photo: String
         cover_photo: String
         settings: Settings!
+        friendCount: Int!
     }
 
     type AuthenticatedUser {
@@ -146,6 +147,7 @@ export const typeDefs = `#graphql
         addInterests(interest: String!): User!
         removeInterest(interest: String!): User!
         updateSettings(settings: SETTINGSINPUT!): User!
+        sendFriendRequest(friendId: ID!): GenericSuccess!
     }
 
     # Input type for Notifications settings
