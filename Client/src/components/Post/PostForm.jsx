@@ -48,7 +48,7 @@ export default function PostForm() {
     e.preventDefault();
 
     // return with a message if textContent is empty
-    if (textContent.length <= 100) {
+    if (textContent.length <= 5) {
       return toast.error("Your content should be more than 100 characters");
     }
 

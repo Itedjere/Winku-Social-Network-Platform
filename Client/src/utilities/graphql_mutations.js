@@ -129,3 +129,31 @@ export const REMOVE_USER_INTEREST = gql`
     }
   }
 `;
+
+export const UPDATE_USER_SETTINGS = gql`
+  mutation UpdateUserSettings($settings: SETTINGSINPUT!) {
+    updateSettings(settings: $settings) {
+      settings {
+        display {
+          theme
+        }
+        interactions {
+          enable_follow_me
+          enable_friend_requests
+          enable_tagging
+        }
+        notifications {
+          enable_notification
+          enable_notification_sound
+          enable_sms
+        }
+        privacy {
+          expose_author_name
+          hide_profile
+          hide_profile_photo
+          show_me_online
+        }
+      }
+    }
+  }
+`;

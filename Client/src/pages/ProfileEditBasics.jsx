@@ -33,7 +33,7 @@ export default function ProfileEditBasics() {
   useEffect(() => {
     if (!authLoading) {
       if (auth && auth.user?._id !== profileId) {
-        navigate("/login", { replace: true });
+        navigate("/", { replace: true });
       }
     }
   }, [profileId, auth, navigate, authLoading]);

@@ -17,6 +17,7 @@ import { fetchUserPosts } from "./services/fetchUserPosts.js";
 import { updateProfileBasic } from "./services/updateProfileBasic.js";
 import { addUserInterests } from "./services/addUserInterests.js";
 import { removeUserInterest } from "./services/removeUserInterest.js";
+import { updateUserSettings } from "./services/updateUserSettings.js";
 
 export const resolvers = {
   Date: GraphQLDateTime,
@@ -81,6 +82,18 @@ export const resolvers = {
     allInterests: async (parent, args, context) => {
       try {
         return await retrieveUser(args.profileId);
+      } catch (error) {
+        console.error("Error fetching interests:", error);
+        throw error;
+      }
+    },
+    userSettings: async (parent, args, context) => {
+      try {
+        const { req } = context;
+        if (!req.isAuth) {
+          throw new Error("User is not authenticated");
+        }
+        return await retrieveUser(args.userId);
       } catch (error) {
         console.error("Error fetching interests:", error);
         throw error;
@@ -211,6 +224,18 @@ export const resolvers = {
         return await removeUserInterest(args, req);
       } catch (error) {
         console.error("Failed to remove interest", error);
+        throw error;
+      }
+    },
+    updateSettings: async (parent, args, context) => {
+      try {
+        const { req } = context;
+        if (!req.isAuth) {
+          throw new Error("User is not authenticated");
+        }
+        return await updateUserSettings(args, req);
+      } catch (error) {
+        console.error("Failed to update settings:", error);
         throw error;
       }
     },

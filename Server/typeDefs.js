@@ -39,7 +39,7 @@ export const typeDefs = `#graphql
     }
 
     type SettingsDisplay {
-        theme: AllowedTheme
+        theme: AllowedTheme!
     }
 
     type Settings {
@@ -130,6 +130,7 @@ export const typeDefs = `#graphql
         singleComment(commentId: ID!): CommentReply!
         allReplies(commentId: ID!): [Reply!]!
         allInterests(profileId: ID!): User!
+        userSettings: User!
     }
 
     type Mutation {
@@ -144,6 +145,42 @@ export const typeDefs = `#graphql
         changePassword(passwordInfo: CHANGEPASSWORDINPUT!): GenericSuccess!
         addInterests(interest: String!): User!
         removeInterest(interest: String!): User!
+        updateSettings(settings: SETTINGSINPUT!): User!
+    }
+
+    # Input type for Notifications settings
+    input NotificationsInput {
+        enable_notification: Boolean!
+        enable_notification_sound: Boolean!
+        enable_sms: Boolean!
+    }
+
+    # Input type for Privacy settings
+    input PrivacyInput {
+        hide_profile: Boolean!
+        hide_profile_photo: Boolean!
+        show_me_online: Boolean!
+        expose_author_name: Boolean!
+    }
+
+    # Input type for Display settings
+    input DisplayInput {
+        theme: AllowedTheme
+    }
+
+    # Input type for Interactions settings
+    input InteractionsInput {
+        enable_tagging: Boolean!
+        enable_friend_requests: Boolean!
+        enable_follow_me: Boolean!
+    }
+
+    # Main input type for Settings
+    input SETTINGSINPUT {
+        notifications: NotificationsInput
+        privacy: PrivacyInput
+        display: DisplayInput
+        interactions: InteractionsInput
     }
 
     input PROFILEBASICINPUT {

@@ -32,7 +32,10 @@ export default function AuthContextProvider({ children }) {
     if (!authDetails) {
       return;
     }
+    console.log(userInfo);
+
     let updatedUser = { ...authDetails.user, ...userInfo };
+    console.log(updatedUser);
 
     authDetails = { ...authDetails, user: updatedUser };
     localStorage.setItem("AuthUser", JSON.stringify(authDetails));
