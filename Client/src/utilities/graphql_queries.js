@@ -81,6 +81,7 @@ export const GET_USER_STATS = gql`
       lastname
       profile_photo
       cover_photo
+      username
     }
   }
 `;

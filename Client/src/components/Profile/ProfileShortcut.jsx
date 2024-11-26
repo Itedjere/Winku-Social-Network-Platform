@@ -15,7 +15,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 
 export default function ProfileShortcut() {
-  const { logoutUser } = useContext(AuthContext);
+  const { logoutUser, auth } = useContext(AuthContext);
   const navigate = useNavigate();
   const logOut = (e) => {
     e.preventDefault();
@@ -41,25 +41,25 @@ export default function ProfileShortcut() {
         </li>
         <li>
           <TfiFiles />
-          <Link to={`/profile`} title="My profile">
+          <Link to={`/profile/${auth?.user?._id}/timeline`} title="My profile">
             My profile
           </Link>
         </li>
         <li>
           <TfiUser />
-          <Link to={`/profile`} title="Friends">
+          <Link to={`/profile/${auth?.user?._id}/friends`} title="Friends">
             friends
           </Link>
         </li>
         <li>
           <TfiImage />
-          <Link to={`/profile`} title="photos">
+          <Link to={`/profile/${auth?.user?._id}/photos`} title="photos">
             photos
           </Link>
         </li>
         <li>
           <TfiVideoCamera />
-          <Link to={`/profile`} title="videos">
+          <Link to={`/profile/${auth?.user?._id}/videos`} title="videos">
             videos
           </Link>
         </li>
@@ -71,7 +71,10 @@ export default function ProfileShortcut() {
         </li>
         <li>
           <TfiBell />
-          <Link to={`/profile`} title="notifications">
+          <Link
+            to={`/profile/${auth?.user?._id}/notifications`}
+            title="notifications"
+          >
             Notifications
           </Link>
         </li>

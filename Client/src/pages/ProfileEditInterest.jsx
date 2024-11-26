@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import {
   ADD_USER_INTERESTS,
@@ -9,11 +9,23 @@ import { toast } from "react-toastify";
 import { handleApolloErrors } from "../utilities/utilities";
 import { GET_USER_INTERESTS } from "../utilities/graphql_queries";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function ProfileEditInterest() {
+  const { auth } = useContext(AuthContext);
   const { profileId } = useParams();
   const [interest, setInterest] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (auth) {
+      if (profileId !== auth.user?._id) {
+        navigate(`profile/${auth.user?._id}/timeline`, { replace: true });
+      }
+    }
+  }, [profileId, auth, navigate]);
+
   const [addInterest] = useMutation(ADD_USER_INTERESTS, {
     update(cache, { data: { addInterests } }) {
       cache.modify({
