@@ -1,0 +1,57 @@
+.photoWrapper {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2000;
+  box-sizing: border-box;
+  display: none;
+}
+
+.photoWrapper.show {
+  display: block;
+}
+
+.photoContainer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 2001;
+  box-sizing: border-box;
+}
+
+.photoModal {
+  width: 700px;
+  height: auto;
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.photoModal .left-btn button {
+  border: 0;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.photoModal .right-btn {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.photoModal .right-btn button {
+  border: 0;
+  cursor: pointer;
+  background-color: #088dcd;
+  color: #fff;
+  display: inline-block;
+  padding: 5px 12px;
+}

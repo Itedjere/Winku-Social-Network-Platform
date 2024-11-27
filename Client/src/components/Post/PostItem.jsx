@@ -108,7 +108,9 @@ export default function PostItem({ post }) {
       <figure>
         <img
           src={
-            post.user.profile_photo ? post.user.profile_photo : friendAvatar10
+            post.user.profile_photo
+              ? `${import.meta.env.VITE_SERVER_URL}${post.user.profile_photo}`
+              : friendAvatar10
           }
           alt=""
         />

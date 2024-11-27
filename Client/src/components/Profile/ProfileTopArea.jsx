@@ -1,4 +1,5 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
 import timeline1 from "../../assets/images/resources/timeline-1.jpg";
 import userAvatar from "../../assets/images/resources/user-avatar.jpg";
 import { FaCameraRetro } from "react-icons/fa";
@@ -11,12 +12,17 @@ import {
   CANCEL_FRIEND_REQUEST,
   CONFIRM_FRIEND_REQUEST,
   SEND_FRIEND_REQUEST,
+  UPDATE_PROFILE_PHOTO,
 } from "../../utilities/graphql_mutations";
 import { handleApolloErrors } from "../../utilities/utilities";
 import { toast } from "react-toastify";
+import PhotoEditorModal from "../Modal/PhotoEditorModal";
 
 export default function ProfileTopArea() {
-  const { auth } = useContext(AuthContext);
+  const [image, setImage] = useState(null);
+  const [openPhotoModal, setOpenPhotoModal] = useState(false);
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+  const { auth, updateUserInfo } = useContext(AuthContext);
   const { profileId } = useParams();
   const { loading, error, data, refetch } = useQuery(GET_USER_STATS, {
     variables: {
@@ -71,6 +77,22 @@ export default function ProfileTopArea() {
               ...existingDetails,
               friendCount,
               friendshipStatus,
+            };
+          },
+        },
+      });
+    },
+  });
+
+  const [updateProfilePhoto] = useMutation(UPDATE_PROFILE_PHOTO, {
+    update(cache, { data: { updateProfilePhoto } }) {
+      cache.modify({
+        fields: {
+          user(existingDetails = {}) {
+            const { profile_photo } = updateProfilePhoto;
+            return {
+              ...existingDetails,
+              profile_photo,
             };
           },
         },
@@ -134,6 +156,71 @@ export default function ProfileTopArea() {
     }
   };
 
+  // Handles file selection
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImage(reader.result);
+        setOpenPhotoModal(true);
+      }; // Convert file to data URL
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleFileUpload = async (croppedBlob) => {
+    // set uploading photo to true
+    setIsUploadingPhoto(true);
+    // Prepare the cropped image to send to the server
+    const formData = new FormData();
+    formData.append("media", croppedBlob, "profile.jpg");
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_SERVER_URL}/upload`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${auth?.token}`,
+          },
+        }
+      );
+
+      // Call graphql to update profile
+      if (response.data.fileUrl) {
+        const { fileUrl } = response.data;
+        const { data } = await updateProfilePhoto({
+          variables: {
+            fileUrl,
+          },
+        });
+
+        if (data) {
+          // Set uploading photo to false
+          setIsUploadingPhoto(false);
+          // Close modal
+          setOpenPhotoModal(false);
+          // Update Auth User
+          updateUserInfo({
+            profile_photo: data?.updateProfilePhoto?.profile_photo,
+          });
+          // Show success message
+          toast.success(`Upload successful.`);
+        }
+      }
+    } catch (error) {
+      // Set uploading photo to false
+      setIsUploadingPhoto(false);
+      // Close modal
+      setOpenPhotoModal(false);
+      // show error message
+      console.error("Upload error:", error);
+      toast.error(`Upload error: ${error.message}`);
+    }
+  };
+
   return (
     <section>
       <div className="feature-photo">
@@ -147,7 +234,7 @@ export default function ProfileTopArea() {
         {!loading && (
           <>
             <div className="add-btn">
-              <span>{data.user.friendCount} friends</span>
+              <span>{data?.user?.friendCount} friends</span>
               {auth?.user?._id !== profileId && (
                 <a
                   href="#"
@@ -155,11 +242,11 @@ export default function ProfileTopArea() {
                   data-ripple=""
                   onClick={handleFriendRequest}
                 >
-                  {data.user.friendshipStatus === "FRIENDS" && "Your Friend"}
-                  {data.user.friendshipStatus === "NONE" && "Add Friend"}
-                  {data.user.friendshipStatus === "PENDING_SENT" &&
+                  {data?.user?.friendshipStatus === "FRIENDS" && "Your Friend"}
+                  {data?.user?.friendshipStatus === "NONE" && "Add Friend"}
+                  {data?.user?.friendshipStatus === "PENDING_SENT" &&
                     "Cancel Request"}
-                  {data.user.friendshipStatus === "PENDING_RECEIVED" &&
+                  {data?.user?.friendshipStatus === "PENDING_RECEIVED" &&
                     "Confirm Request"}
                 </a>
               )}
@@ -185,13 +272,26 @@ export default function ProfileTopArea() {
                     <Skeleton height={182} />
                   ) : (
                     <>
-                      <img src={userAvatar} alt="" />
+                      <img
+                        src={
+                          data?.user?.profile_photo
+                            ? `${import.meta.env.VITE_SERVER_URL}${
+                                data?.user?.profile_photo
+                              }`
+                            : userAvatar
+                        }
+                        alt=""
+                      />
                       {auth?.user?._id === profileId && (
                         <form className="edit-phto">
                           <FaCameraRetro />
                           <label className="fileContainer">
                             Edit Display Photo
-                            <input type="file" />
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={handleFileChange}
+                            />
                           </label>
                         </form>
                       )}
@@ -206,8 +306,8 @@ export default function ProfileTopArea() {
                   <li className="admin-name">
                     {!loading && (
                       <>
-                        <h5>{`${data.user.firstname} ${data.user.lastname}`}</h5>
-                        <span>{data.user.username}</span>
+                        <h5>{`${data?.user?.firstname} ${data?.user?.lastname}`}</h5>
+                        <span>{data?.user?.username}</span>
                       </>
                     )}
                   </li>
@@ -264,6 +364,13 @@ export default function ProfileTopArea() {
           </div>
         </div>
       </div>
+      <PhotoEditorModal
+        showModal={openPhotoModal}
+        photo={image}
+        closeModal={setOpenPhotoModal}
+        handleFileUpload={handleFileUpload}
+        isUploadingPhoto={isUploadingPhoto}
+      />
     </section>
   );
 }

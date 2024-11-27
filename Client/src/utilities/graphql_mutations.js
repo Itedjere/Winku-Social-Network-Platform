@@ -182,3 +182,11 @@ export const CONFIRM_FRIEND_REQUEST = gql`
     }
   }
 `;
+
+export const UPDATE_PROFILE_PHOTO = gql`
+  mutation UpdateProfilePhoto($fileUrl: String!) {
+    updateProfilePhoto(fileUrl: $fileUrl) {
+      profile_photo
+    }
+  }
+`;
