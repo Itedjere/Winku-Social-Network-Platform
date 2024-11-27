@@ -10,6 +10,7 @@ export default function ProfileTimeline() {
     variables: {
       profileId,
     },
+    pollInterval: 500,
   });
 
   if (loading) return "Loading...";

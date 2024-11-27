@@ -4,7 +4,9 @@ import Posts from "../components/Post/Posts";
 import { GET_ALL_POSTS } from "../utilities/graphql_queries";
 
 export default function Home() {
-  const { loading, error, data } = useQuery(GET_ALL_POSTS);
+  const { loading, error, data } = useQuery(GET_ALL_POSTS, {
+    pollInterval: 500,
+  });
 
   if (loading) return "Loading...";
   if (error) return `Error! ${error.message}`;

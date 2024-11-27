@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import timeline1 from "../../assets/images/resources/timeline-1.jpg";
 import userAvatar from "../../assets/images/resources/user-avatar.jpg";
 import { FaCameraRetro } from "react-icons/fa";
@@ -9,6 +9,7 @@ import Skeleton from "react-loading-skeleton";
 import { AuthContext } from "../../contexts/AuthContext";
 import {
   CANCEL_FRIEND_REQUEST,
+  CONFIRM_FRIEND_REQUEST,
   SEND_FRIEND_REQUEST,
 } from "../../utilities/graphql_mutations";
 import { handleApolloErrors } from "../../utilities/utilities";
@@ -17,11 +18,19 @@ import { toast } from "react-toastify";
 export default function ProfileTopArea() {
   const { auth } = useContext(AuthContext);
   const { profileId } = useParams();
-  const { loading, error, data } = useQuery(GET_USER_STATS, {
+  const { loading, error, data, refetch } = useQuery(GET_USER_STATS, {
     variables: {
       profileId,
     },
   });
+
+  useEffect(() => {
+    // Refetch Profile Id
+    if (profileId) {
+      refetch();
+    }
+  }, [profileId, refetch]);
+
   const [sendRequest] = useMutation(SEND_FRIEND_REQUEST, {
     update(cache, { data: { sendFriendRequest } }) {
       cache.modify({
@@ -45,6 +54,23 @@ export default function ProfileTopArea() {
             return {
               ...existingDetails,
               friendshipStatus: cancelFriendRequest.friendshipStatus,
+            };
+          },
+        },
+      });
+    },
+  });
+
+  const [confirmRequest] = useMutation(CONFIRM_FRIEND_REQUEST, {
+    update(cache, { data: { confirmFriendRequest } }) {
+      cache.modify({
+        fields: {
+          user(existingDetails = {}) {
+            const { friendCount, friendshipStatus } = confirmFriendRequest;
+            return {
+              ...existingDetails,
+              friendCount,
+              friendshipStatus,
             };
           },
         },
@@ -76,6 +102,18 @@ export default function ProfileTopArea() {
     }
   };
 
+  const acceptFriendRequest = async () => {
+    const { data } = await confirmRequest({
+      variables: {
+        friendId: profileId,
+      },
+    });
+
+    if (data) {
+      toast.success("Friend request accepted");
+    }
+  };
+
   const handleFriendRequest = async (e) => {
     e.preventDefault();
     if (data) {
@@ -88,6 +126,7 @@ export default function ProfileTopArea() {
           cancelFriendRequest();
         } else if (data.user.friendshipStatus === "PENDING_RECEIVED") {
           // Confirm friend request logic
+          acceptFriendRequest();
         }
       } catch (error) {
         handleApolloErrors(error);
@@ -117,11 +156,11 @@ export default function ProfileTopArea() {
                   onClick={handleFriendRequest}
                 >
                   {data.user.friendshipStatus === "FRIENDS" && "Your Friend"}
-                  {data.user.friendshipStatus === "NONE"
-                    ? "Add Friend"
-                    : data.user.friendshipStatus === "PENDING_SENT"
-                    ? "Cancel Request"
-                    : "Confirm Request"}
+                  {data.user.friendshipStatus === "NONE" && "Add Friend"}
+                  {data.user.friendshipStatus === "PENDING_SENT" &&
+                    "Cancel Request"}
+                  {data.user.friendshipStatus === "PENDING_RECEIVED" &&
+                    "Confirm Request"}
                 </a>
               )}
             </div>

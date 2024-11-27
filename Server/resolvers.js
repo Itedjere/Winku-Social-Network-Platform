@@ -22,6 +22,7 @@ import { createFriendRequest } from "./services/createFriendRequest.js";
 import { retrieveFriendCount } from "./services/User/retrieveFriendCount.js";
 import { retreiveFriendshipStatus } from "./services/User/retrieveFriendshipStatus.js";
 import { deleteFriendRequest } from "./services/deleteFriendRequest.js";
+import { acceptFriendRequest } from "./services/acceptFriendRequest.js";
 
 export const resolvers = {
   Date: GraphQLDateTime,
@@ -266,6 +267,18 @@ export const resolvers = {
         return await deleteFriendRequest(args, req);
       } catch (error) {
         console.error("Failed to cancel friend request:", error);
+        throw error;
+      }
+    },
+    confirmFriendRequest: async (parent, args, context) => {
+      try {
+        const { req } = context;
+        if (!req.isAuth) {
+          throw new Error("User is not authenticated");
+        }
+        return await acceptFriendRequest(args, req);
+      } catch (error) {
+        console.error("Failed to accept friend request:", error);
         throw error;
       }
     },

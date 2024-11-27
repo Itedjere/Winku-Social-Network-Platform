@@ -150,6 +150,7 @@ export const typeDefs = `#graphql
         updateSettings(settings: SETTINGSINPUT!): User!
         sendFriendRequest(friendId: ID!): User!
         cancelFriendRequest(friendId: ID!): User!
+        confirmFriendRequest(friendId: ID!): User!
     }
 
     # Input type for Notifications settings
