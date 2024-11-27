@@ -26,5 +26,5 @@ export const createFriendRequest = async (args, req) => {
   await friendRequest.save();
 
   // send success message
-  return { status: true, message: "Friend request sent" };
+  return friend;
 };

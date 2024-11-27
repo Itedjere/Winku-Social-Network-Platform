@@ -3,10 +3,13 @@ import timeline1 from "../../assets/images/resources/timeline-1.jpg";
 import userAvatar from "../../assets/images/resources/user-avatar.jpg";
 import { FaCameraRetro } from "react-icons/fa";
 import { NavLink, useParams } from "react-router-dom";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { GET_USER_STATS } from "../../utilities/graphql_queries";
 import Skeleton from "react-loading-skeleton";
 import { AuthContext } from "../../contexts/AuthContext";
+import { SEND_FRIEND_REQUEST } from "../../utilities/graphql_mutations";
+import { handleApolloErrors } from "../../utilities/utilities";
+import { toast } from "react-toastify";
 
 export default function ProfileTopArea() {
   const { auth } = useContext(AuthContext);
@@ -16,6 +19,50 @@ export default function ProfileTopArea() {
       profileId,
     },
   });
+  const [sendRequest] = useMutation(SEND_FRIEND_REQUEST, {
+    update(cache, { data: { sendFriendRequest } }) {
+      cache.modify({
+        fields: {
+          user(existingDetails = {}) {
+            return {
+              ...existingDetails,
+              friendshipStatus: sendFriendRequest.friendshipStatus,
+            };
+          },
+        },
+      });
+    },
+  });
+
+  const sendFriendRequest = async () => {
+    const { data } = await sendRequest({
+      variables: {
+        friendId: profileId,
+      },
+    });
+
+    if (data) {
+      toast.success(data.sendFriendRequest.message);
+    }
+  };
+
+  const handleFriendRequest = async (e) => {
+    e.preventDefault();
+    if (data) {
+      try {
+        if (data.user.friendshipStatus === "NONE") {
+          // Send friend request logic
+          sendFriendRequest();
+        } else if (data.user.friendshipStatus === "PENDING_SENT") {
+          // Cancel friend request logic
+        } else if (data.user.friendshipStatus === "PENDING_RECEIVED") {
+          // Confirm friend request logic
+        }
+      } catch (error) {
+        handleApolloErrors(error);
+      }
+    }
+  };
 
   return (
     <section>
@@ -30,10 +77,20 @@ export default function ProfileTopArea() {
         {!loading && (
           <>
             <div className="add-btn">
-              <span>1205 followers</span>
+              <span>{data.user.friendCount} friends</span>
               {auth?.user?._id !== profileId && (
-                <a href="#" title="" data-ripple="">
-                  Add Friend
+                <a
+                  href="#"
+                  title=""
+                  data-ripple=""
+                  onClick={handleFriendRequest}
+                >
+                  {data.user.friendshipStatus === "FRIENDS" && "Your Friend"}
+                  {data.user.friendshipStatus === "NONE"
+                    ? "Add Friend"
+                    : data.user.friendshipStatus === "PENDING_SENT"
+                    ? "Cancel Request"
+                    : "Confirm Request"}
                 </a>
               )}
             </div>

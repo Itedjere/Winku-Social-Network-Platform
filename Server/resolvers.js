@@ -19,7 +19,8 @@ import { addUserInterests } from "./services/addUserInterests.js";
 import { removeUserInterest } from "./services/removeUserInterest.js";
 import { updateUserSettings } from "./services/updateUserSettings.js";
 import { createFriendRequest } from "./services/createFriendRequest.js";
-import { Friend } from "./models/friendModel.js";
+import { retrieveFriendCount } from "./services/User/retrieveFriendCount.js";
+import { retreiveFriendshipStatus } from "./services/User/retrieveFriendshipStatus.js";
 
 export const resolvers = {
   Date: GraphQLDateTime,
@@ -27,7 +28,9 @@ export const resolvers = {
     user: async (parent, args, context) => {
       try {
         const { userId } = args;
-        return await retrieveUser(userId);
+        const { req } = context;
+
+        return await retrieveUser(userId, req);
       } catch (error) {
         console.error("Error retrieving user:", error);
         throw error;
@@ -256,14 +259,22 @@ export const resolvers = {
   },
   User: {
     async friendCount(parent) {
-      // Count friends where the user is either `user` or `friend`
-      const count = await Friend.countDocuments({
-        $or: [
-          { user: parent._id, status: "ACCEPTED" },
-          { friend: parent._id, status: "ACCEPTED" },
-        ],
-      });
-      return count;
+      try {
+        // Count friends where the user is either `user` or `friend`
+        return await retrieveFriendCount(parent._id);
+      } catch (error) {
+        console.error("Error retreiving friend count:", error);
+        throw error;
+      }
+    },
+    async friendshipStatus(parent, args, context) {
+      try {
+        const { req } = context;
+        return await retreiveFriendshipStatus(parent._id, req);
+      } catch (error) {
+        console.error("Error retrieving friendship count:", error);
+        throw error;
+      }
     },
   },
 };

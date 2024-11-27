@@ -157,3 +157,11 @@ export const UPDATE_USER_SETTINGS = gql`
     }
   }
 `;
+
+export const SEND_FRIEND_REQUEST = gql`
+  mutation SendFriendReuest($friendId: ID!) {
+    sendFriendRequest(friendId: $friendId) {
+      friendshipStatus
+    }
+  }
+`;

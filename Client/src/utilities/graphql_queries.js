@@ -82,6 +82,8 @@ export const GET_USER_STATS = gql`
       profile_photo
       cover_photo
       username
+      friendCount
+      friendshipStatus
     }
   }
 `;
