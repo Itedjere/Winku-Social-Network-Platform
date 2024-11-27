@@ -149,6 +149,7 @@ export const typeDefs = `#graphql
         removeInterest(interest: String!): User!
         updateSettings(settings: SETTINGSINPUT!): User!
         sendFriendRequest(friendId: ID!): User!
+        cancelFriendRequest(friendId: ID!): User!
     }
 
     # Input type for Notifications settings

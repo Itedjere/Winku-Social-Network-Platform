@@ -165,3 +165,19 @@ export const SEND_FRIEND_REQUEST = gql`
     }
   }
 `;
+
+export const CANCEL_FRIEND_REQUEST = gql`
+  mutation CancelFriendRequest($friendId: ID!) {
+    cancelFriendRequest(friendId: $friendId) {
+      friendshipStatus
+    }
+  }
+`;
+
+export const CONFIRM_FRIEND_REQUEST = gql`
+  mutation ConfirmFriendRequest($friendId: ID!) {
+    confirmFriendRequest(friendId: $friendId) {
+      friendshipStatus
+    }
+  }
+`;

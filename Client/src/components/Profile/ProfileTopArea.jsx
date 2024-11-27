@@ -7,7 +7,10 @@ import { useMutation, useQuery } from "@apollo/client";
 import { GET_USER_STATS } from "../../utilities/graphql_queries";
 import Skeleton from "react-loading-skeleton";
 import { AuthContext } from "../../contexts/AuthContext";
-import { SEND_FRIEND_REQUEST } from "../../utilities/graphql_mutations";
+import {
+  CANCEL_FRIEND_REQUEST,
+  SEND_FRIEND_REQUEST,
+} from "../../utilities/graphql_mutations";
 import { handleApolloErrors } from "../../utilities/utilities";
 import { toast } from "react-toastify";
 
@@ -34,6 +37,21 @@ export default function ProfileTopArea() {
     },
   });
 
+  const [cancelRequest] = useMutation(CANCEL_FRIEND_REQUEST, {
+    update(cache, { data: { cancelFriendRequest } }) {
+      cache.modify({
+        fields: {
+          user(existingDetails = {}) {
+            return {
+              ...existingDetails,
+              friendshipStatus: cancelFriendRequest.friendshipStatus,
+            };
+          },
+        },
+      });
+    },
+  });
+
   const sendFriendRequest = async () => {
     const { data } = await sendRequest({
       variables: {
@@ -42,7 +60,19 @@ export default function ProfileTopArea() {
     });
 
     if (data) {
-      toast.success(data.sendFriendRequest.message);
+      toast.success("Friend Request Sent!!!");
+    }
+  };
+
+  const cancelFriendRequest = async () => {
+    const { data } = await cancelRequest({
+      variables: {
+        friendId: profileId,
+      },
+    });
+
+    if (data) {
+      toast.success("Friend Request Cancel");
     }
   };
 
@@ -55,6 +85,7 @@ export default function ProfileTopArea() {
           sendFriendRequest();
         } else if (data.user.friendshipStatus === "PENDING_SENT") {
           // Cancel friend request logic
+          cancelFriendRequest();
         } else if (data.user.friendshipStatus === "PENDING_RECEIVED") {
           // Confirm friend request logic
         }
