@@ -112,3 +112,17 @@ export const GET_USER_INTERESTS = gql`
     }
   }
 `;
+
+export const GET_USER_FRIENDS = gql`
+  query Friends($profileId: ID!) {
+    friends(profileId: $profileId) {
+      _id
+      firstname
+      lastname
+      username
+      friendId
+      profile_photo
+      isFriend
+    }
+  }
+`;

@@ -10007,3 +10007,16 @@ aside.sidebar.full-style {
 .object-fill-cover {
   object-fit: cover;
 }
+
+.nearby-contct .Skeleton .profilePhoto {
+  width: 90px;
+}
+.nearby-contct .Skeleton .profileName {
+  width: calc(100% - 90px);
+  margin-top: 15px;
+}
+
+.nearby-contct .Skeleton .callAction {
+  margin-top: 15px;
+  width: 100px;
+}
