@@ -24,6 +24,7 @@ import { retreiveFriendshipStatus } from "./services/User/retrieveFriendshipStat
 import { deleteFriendRequest } from "./services/deleteFriendRequest.js";
 import { acceptFriendRequest } from "./services/acceptFriendRequest.js";
 import { uploadProfilePhoto } from "./services/uploadProfilePhoto.js";
+import { uploadCoverPhoto } from "./services/uploadCoverPhoto.js";
 
 export const resolvers = {
   Date: GraphQLDateTime,
@@ -292,6 +293,18 @@ export const resolvers = {
         return await uploadProfilePhoto(args, req);
       } catch (error) {
         console.error("Failed to upload profile photo:", error);
+        throw error;
+      }
+    },
+    updateCoverPhoto: async (parent, args, context) => {
+      try {
+        const { req } = context;
+        if (!req.isAuth) {
+          throw new Error("User is not authenticated");
+        }
+        return await uploadCoverPhoto(args, req);
+      } catch (error) {
+        console.error("Failed to upload cover photo:", error);
         throw error;
       }
     },

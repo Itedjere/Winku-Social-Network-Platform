@@ -12,14 +12,17 @@ import {
   CANCEL_FRIEND_REQUEST,
   CONFIRM_FRIEND_REQUEST,
   SEND_FRIEND_REQUEST,
+  UPDATE_COVER_PHOTO,
   UPDATE_PROFILE_PHOTO,
 } from "../../utilities/graphql_mutations";
 import { handleApolloErrors } from "../../utilities/utilities";
 import { toast } from "react-toastify";
 import PhotoEditorModal from "../Modal/PhotoEditorModal";
+import { photoCropTypes } from "../../utilities/utilities";
 
 export default function ProfileTopArea() {
   const [image, setImage] = useState(null);
+  const [cropStyle, setCropStyle] = useState(photoCropTypes.portrait);
   const [openPhotoModal, setOpenPhotoModal] = useState(false);
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
   const { auth, updateUserInfo } = useContext(AuthContext);
@@ -100,6 +103,22 @@ export default function ProfileTopArea() {
     },
   });
 
+  const [updateCoverPhoto] = useMutation(UPDATE_COVER_PHOTO, {
+    update(cache, { data: { updateCoverPhoto } }) {
+      cache.modify({
+        fields: {
+          user(existingDetails = {}) {
+            const { cover_photo } = updateCoverPhoto;
+            return {
+              ...existingDetails,
+              cover_photo,
+            };
+          },
+        },
+      });
+    },
+  });
+
   const sendFriendRequest = async () => {
     const { data } = await sendRequest({
       variables: {
@@ -157,12 +176,13 @@ export default function ProfileTopArea() {
   };
 
   // Handles file selection
-  const handleFileChange = (e) => {
+  const handleFileChange = (e, crop) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
         setImage(reader.result);
+        setCropStyle(crop);
         setOpenPhotoModal(true);
       }; // Convert file to data URL
       reader.readAsDataURL(file);
@@ -170,13 +190,18 @@ export default function ProfileTopArea() {
   };
 
   const handleFileUpload = async (croppedBlob) => {
-    // set uploading photo to true
-    setIsUploadingPhoto(true);
+    setIsUploadingPhoto(true); // Indicate that the upload is in progress
+
     // Prepare the cropped image to send to the server
     const formData = new FormData();
-    formData.append("media", croppedBlob, "profile.jpg");
+    formData.append(
+      "media",
+      croppedBlob,
+      cropStyle.cropType === "portrait" ? "profile.jpg" : "banner.jpg"
+    );
 
     try {
+      // Upload the image to the server
       const response = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}/upload`,
         formData,
@@ -188,36 +213,34 @@ export default function ProfileTopArea() {
         }
       );
 
-      // Call graphql to update profile
-      if (response.data.fileUrl) {
-        const { fileUrl } = response.data;
-        const { data } = await updateProfilePhoto({
-          variables: {
-            fileUrl,
-          },
-        });
+      // Check if fileUrl is returned
+      const { fileUrl } = response.data;
+      if (!fileUrl) throw new Error("No file URL returned from server.");
 
-        if (data) {
-          // Set uploading photo to false
-          setIsUploadingPhoto(false);
-          // Close modal
-          setOpenPhotoModal(false);
-          // Update Auth User
-          updateUserInfo({
-            profile_photo: data?.updateProfilePhoto?.profile_photo,
-          });
-          // Show success message
-          toast.success(`Upload successful.`);
-        }
+      // Call the appropriate GraphQL mutation
+      const variables = { fileUrl };
+      let data;
+
+      if (cropStyle.cropType === "portrait") {
+        ({ data } = await updateProfilePhoto({ variables }));
+      } else {
+        ({ data } = await updateCoverPhoto({ variables }));
       }
+
+      // Update user info and show success message
+      const userInfo =
+        cropStyle.cropType === "portrait"
+          ? { profile_photo: data?.updateProfilePhoto?.profile_photo }
+          : { cover_photo: data?.updateCoverPhoto?.cover_photo };
+
+      updateUserInfo(userInfo);
+      toast.success(`Upload successful.`);
     } catch (error) {
-      // Set uploading photo to false
-      setIsUploadingPhoto(false);
-      // Close modal
-      setOpenPhotoModal(false);
-      // show error message
       console.error("Upload error:", error);
       toast.error(`Upload error: ${error.message}`);
+    } finally {
+      setIsUploadingPhoto(false); // Ensure this runs regardless of success or failure
+      setOpenPhotoModal(false); // Close modal
     }
   };
 
@@ -228,7 +251,16 @@ export default function ProfileTopArea() {
           {loading ? (
             <Skeleton height={450} />
           ) : (
-            <img src={timeline1} alt="Profile Photo" />
+            <img
+              src={
+                data?.user?.cover_photo
+                  ? `${import.meta.env.VITE_SERVER_URL}${
+                      data?.user?.cover_photo
+                    }`
+                  : timeline1
+              }
+              alt="Profile Photo"
+            />
           )}
         </figure>
         {!loading && (
@@ -256,7 +288,12 @@ export default function ProfileTopArea() {
                 <FaCameraRetro />
                 <label className="fileContainer">
                   Edit Cover Photo
-                  <input type="file" />
+                  <input
+                    type="file"
+                    onChange={(e) =>
+                      handleFileChange(e, photoCropTypes.landscape)
+                    }
+                  />
                 </label>
               </form>
             )}
@@ -290,7 +327,9 @@ export default function ProfileTopArea() {
                             <input
                               type="file"
                               accept="image/*"
-                              onChange={handleFileChange}
+                              onChange={(e) =>
+                                handleFileChange(e, photoCropTypes.portrait)
+                              }
                             />
                           </label>
                         </form>
@@ -370,6 +409,7 @@ export default function ProfileTopArea() {
         closeModal={setOpenPhotoModal}
         handleFileUpload={handleFileUpload}
         isUploadingPhoto={isUploadingPhoto}
+        cropStyle={cropStyle}
       />
     </section>
   );

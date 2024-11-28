@@ -152,6 +152,7 @@ export const typeDefs = `#graphql
         cancelFriendRequest(friendId: ID!): User!
         confirmFriendRequest(friendId: ID!): User!
         updateProfilePhoto(fileUrl: String!): User!
+        updateCoverPhoto(fileUrl: String!): User!
     }
 
     # Input type for Notifications settings

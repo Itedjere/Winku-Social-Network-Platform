@@ -100,3 +100,16 @@ export const formatDate = (date) => {
   const isoDate = new Date(date).toISOString(); // Convert to ISO format
   return isoDate.slice(0, 10); // Extract only the date part
 };
+
+export const photoCropTypes = {
+  portrait: {
+    width: 200,
+    height: 200,
+    cropType: "portrait",
+  },
+  landscape: {
+    width: 1366,
+    height: 400,
+    cropType: "landscape",
+  },
+};

@@ -190,3 +190,11 @@ export const UPDATE_PROFILE_PHOTO = gql`
     }
   }
 `;
+
+export const UPDATE_COVER_PHOTO = gql`
+  mutation UpdateCoverPhoto($fileUrl: String!) {
+    updateCoverPhoto(fileUrl: $fileUrl) {
+      cover_photo
+    }
+  }
+`;

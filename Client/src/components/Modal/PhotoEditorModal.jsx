@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import "./PhotoEditorModal.css";
 import { FaArrowLeft } from "react-icons/fa";
 import Cropper from "react-cropper";
@@ -10,8 +10,15 @@ export default function PhotoEditorModal({
   photo,
   handleFileUpload,
   isUploadingPhoto,
+  cropStyle,
 }) {
   const cropperRef = useRef(null);
+
+  useEffect(() => {
+    cropperRef.current?.cropper.setAspectRatio(
+      cropStyle.cropType === "portrait" ? 1 : 3.4
+    );
+  }, [cropStyle, cropperRef]);
 
   const handleCrop = async () => {
     const cropper = cropperRef.current.cropper;
@@ -19,8 +26,8 @@ export default function PhotoEditorModal({
       (resolve) =>
         cropper
           .getCroppedCanvas({
-            width: 200, // Desired width
-            height: 200, // Desired height
+            width: cropStyle.width, // Desired width
+            height: cropStyle.height, // Desired height
           })
           .toBlob(resolve) // Get cropped image as a Blob
     );
