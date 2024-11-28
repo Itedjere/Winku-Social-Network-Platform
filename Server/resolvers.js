@@ -25,6 +25,7 @@ import { deleteFriendRequest } from "./services/deleteFriendRequest.js";
 import { acceptFriendRequest } from "./services/acceptFriendRequest.js";
 import { uploadProfilePhoto } from "./services/uploadProfilePhoto.js";
 import { uploadCoverPhoto } from "./services/uploadCoverPhoto.js";
+import { fetchFriends } from "./services/fetchFriends.js";
 
 export const resolvers = {
   Date: GraphQLDateTime,
@@ -105,6 +106,18 @@ export const resolvers = {
         return await retrieveUser(args.userId);
       } catch (error) {
         console.error("Error fetching interests:", error);
+        throw error;
+      }
+    },
+    friends: async (parent, args, context) => {
+      try {
+        const { req } = context;
+        if (!req.isAuth) {
+          throw new Error("User is not authenticated");
+        }
+        return await fetchFriends(args, req);
+      } catch (error) {
+        console.error("Error fetching friends:", error);
         throw error;
       }
     },

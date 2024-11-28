@@ -123,8 +123,19 @@ export const typeDefs = `#graphql
         replies: [Reply!]!
     }
 
+    type Friend {
+        _id: ID!
+        firstname: String!
+        lastname: String!
+        username: String!
+        profile_photo: String!
+        friendId: String!
+        isFriend: Boolean!
+    }
+
     type Query {
         user(userId: ID!): User
+        friends(profileId: ID!): [Friend!]!
         allPosts: [Post!]!
         userPosts(profileId: ID!): [Post!]!
         singlePost(postId: ID!): PostComment!
