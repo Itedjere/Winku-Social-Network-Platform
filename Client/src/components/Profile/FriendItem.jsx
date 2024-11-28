@@ -1,5 +1,7 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
+import { Link } from "react-router-dom";
+import friendAvatar9 from "../../assets/images/resources/friend-avatar9.jpg";
 
 export default function FriendItem({ friend }) {
   const { auth } = useContext(AuthContext);
@@ -7,7 +9,7 @@ export default function FriendItem({ friend }) {
     <li>
       <div className="nearly-pepls">
         <figure>
-          <a href={`/profile/${friend.friendId}/timeline`} title="">
+          <Link to={`/profile/${friend.friendId}/timeline`} title="">
             <img
               src={
                 friend.profile_photo
@@ -16,13 +18,13 @@ export default function FriendItem({ friend }) {
               }
               alt=""
             />
-          </a>
+          </Link>
         </figure>
         <div className="pepl-info">
           <h4>
-            <a href={`/profile/${friend.friendId}/timeline`} title="">
+            <Link to={`/profile/${friend.friendId}/timeline`} title="">
               {`${friend.firstname} ${friend.lastname}`}
-            </a>
+            </Link>
           </h4>
           <span>{friend.username}</span>
           {friend.friendId !== auth?.user?._id && (

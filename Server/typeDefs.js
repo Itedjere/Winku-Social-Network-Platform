@@ -128,7 +128,7 @@ export const typeDefs = `#graphql
         firstname: String!
         lastname: String!
         username: String!
-        profile_photo: String!
+        profile_photo: String
         friendId: String!
         isFriend: Boolean!
     }
@@ -144,6 +144,8 @@ export const typeDefs = `#graphql
         allReplies(commentId: ID!): [Reply!]!
         allInterests(profileId: ID!): User!
         userSettings: User!
+        userPhotos(profileId: ID!): [Post!]!
+        userVideos(profileId: ID!): [Post!]!
     }
 
     type Mutation {
