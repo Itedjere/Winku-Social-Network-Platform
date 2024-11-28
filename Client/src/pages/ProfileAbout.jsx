@@ -1,4 +1,5 @@
-import React from "react";
+import { useQuery } from "@apollo/client";
+import React, { useEffect } from "react";
 import {
   TfiEmail,
   TfiFacebook,
@@ -9,8 +10,24 @@ import {
   TfiUser,
   TfiWorld,
 } from "react-icons/tfi";
+import { useParams } from "react-router-dom";
+import { GET_USER_INFO } from "../utilities/graphql_queries";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 export default function ProfileAbout() {
+  const { profileId } = useParams();
+  const { loading, error, data, refetch } = useQuery(GET_USER_INFO, {
+    variables: {
+      profileId,
+    },
+  });
+
+  useEffect(() => {
+    // Refetch Profile Id
+    if (profileId) {
+      refetch();
+    }
+  }, [profileId, refetch]);
   return (
     <div className="central-meta">
       <div className="about">
@@ -25,102 +42,104 @@ export default function ProfileAbout() {
             aliquip ex ea commodo consequat.
           </p>
         </div>
-        <div className="d-flex flex-row mt-2">
-          <ul className="nav nav-tabs nav-tabs--vertical nav-tabs--left">
-            <li className="nav-item">
-              <a href="#basic" className="nav-link active" data-toggle="tab">
-                Basic info
-              </a>
-            </li>
-            <li className="nav-item">
-              <a href="#location" className="nav-link" data-toggle="tab">
-                location
-              </a>
-            </li>
-            <li className="nav-item">
-              <a href="#work" className="nav-link" data-toggle="tab">
-                work and education
-              </a>
-            </li>
-            <li className="nav-item">
-              <a href="#interest" className="nav-link" data-toggle="tab">
-                interests
-              </a>
-            </li>
-            <li className="nav-item">
-              <a href="#lang" className="nav-link" data-toggle="tab">
-                languages
-              </a>
-            </li>
-          </ul>
-          <div className="tab-content">
-            <div className="tab-pane fade show active" id="basic">
-              <ul className="basics">
-                <li>
-                  <TfiUser />
-                  sarah grey
-                </li>
-                <li>
-                  <TfiMapAlt />
-                  live in Dubai
-                </li>
-                <li>
-                  <TfiMobile />
-                  +1-234-345675
-                </li>
-                <li>
-                  <TfiEmail />
-                  <a
-                    href="https://wpkixx.com/cdn-cgi/l/email-protection"
-                    className="__cf_email__"
-                    data-cfemail="3c4553494e515d55507c59515d5550125f5351"
-                  >
-                    [email&#160;protected]
-                  </a>
-                </li>
-                <li>
-                  <TfiWorld />
-                  www.yoursite.com
-                </li>
-              </ul>
+        <div className="row mt-2">
+          <div className="col-12">
+            {error && <p>Sorry an error occured: {error.message}</p>}
+          </div>
+        </div>
+        {loading && (
+          <div className="row mt-2">
+            <div className="col-4">
+              <SkeletonTheme height="25px">
+                <Skeleton count={5} />
+              </SkeletonTheme>
             </div>
-            <div className="tab-pane fade" id="location" role="tabpanel">
-              <div className="location-map">
-                <div id="map-canvas"></div>
-              </div>
+            <div className="col-8">
+              <Skeleton width="100%" height="140px" />
             </div>
-            <div className="tab-pane fade" id="work" role="tabpanel">
-              <div>
-                <a href="#" title="">
-                  Envato
+          </div>
+        )}
+        {data && (
+          <div className="d-flex flex-row mt-2">
+            <ul className="nav nav-tabs nav-tabs--vertical nav-tabs--left">
+              <li className="nav-item">
+                <a href="#basic" className="nav-link active" data-toggle="tab">
+                  Basic info
                 </a>
-                <p>work as autohr in envato themeforest from 2013</p>
-                <ul className="education">
+              </li>
+              <li className="nav-item">
+                <a href="#location" className="nav-link" data-toggle="tab">
+                  location
+                </a>
+              </li>
+              <li className="nav-item">
+                <a href="#interest" className="nav-link" data-toggle="tab">
+                  interests
+                </a>
+              </li>
+              <li className="nav-item">
+                <a href="#lang" className="nav-link" data-toggle="tab">
+                  languages
+                </a>
+              </li>
+            </ul>
+            <div className="tab-content">
+              <div className="tab-pane fade show active" id="basic">
+                <ul className="basics">
                   <li>
-                    <TfiFacebook /> BSCS from Oxford University
+                    <TfiUser />
+                    {data.user?.firstname} {data.user?.lastname}
                   </li>
                   <li>
-                    <TfiTwitter /> MSCS from Harvard Unversity
+                    <TfiMapAlt />
+                    {data.user?.city && data.user?.state && data.user?.country
+                      ? `live in ${data.user?.city} ${data.user?.state} ${data.user?.country}`
+                      : "Not set yet"}
+                  </li>
+                  <li>
+                    <TfiMobile />
+                    {data.user?.phone || "Not set yet"}
+                  </li>
+                  <li>
+                    <TfiEmail />
+                    {data.user?.email || "Not set yet"}
+                  </li>
+                  <li>
+                    <TfiWorld />
+                    {data.user?.website || "Not set yet"}
                   </li>
                 </ul>
               </div>
-            </div>
-            <div className="tab-pane fade" id="interest" role="tabpanel">
-              <ul className="basics">
-                <li>Footbal</li>
-                <li>internet</li>
-                <li>photography</li>
-              </ul>
-            </div>
-            <div className="tab-pane fade" id="lang" role="tabpanel">
-              <ul className="basics">
-                <li>english</li>
-                <li>french</li>
-                <li>spanish</li>
-              </ul>
+              <div className="tab-pane fade" id="location" role="tabpanel">
+                <div className="location-map">
+                  <div id="map-canvas"></div>
+                </div>
+              </div>
+              <div className="tab-pane fade" id="interest" role="tabpanel">
+                {data.user?.interests.length === 0 ? (
+                  <p>Not yet set</p>
+                ) : (
+                  <ul className="basics">
+                    {data.user?.interests.map((interest) => (
+                      <li key={interest}>{interest}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              <div className="tab-pane fade" id="lang" role="tabpanel">
+                {data.user?.languages.length === 0 ? (
+                  <p>Not yet set</p>
+                ) : (
+                  <ul className="basics">
+                    {data.user?.languages.map((language) => (
+                      <li key={language}>{language}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

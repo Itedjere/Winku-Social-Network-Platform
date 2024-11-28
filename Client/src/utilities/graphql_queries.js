@@ -88,6 +88,23 @@ export const GET_USER_STATS = gql`
   }
 `;
 
+export const GET_USER_INFO = gql`
+  query GetUserInfo($profileId: ID!) {
+    user(userId: $profileId) {
+      firstname
+      lastname
+      about_me
+      city
+      state
+      country
+      phone
+      email
+      interests
+      languages
+    }
+  }
+`;
+
 export const GET_USER_INTERESTS = gql`
   query GetAllUserInterest($profileId: ID!) {
     allInterests(profileId: $profileId) {
